@@ -27,7 +27,7 @@ void begin()
 //Reads from a given location from the AS726x
 static uint8_t readRegister(uint8_t addr)
 {
-	uint8_t data = 0;
+	char data = 0;
 	I2C1_byteRead(AS7265X_ADDR, addr, &data);
 	return data;
 }
@@ -244,26 +244,103 @@ void enableIndicator()
 {
 	selectDevice(AS72651_NIR);
 
-	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
-	value |= (1U << 0); //Set ENABLE_LED_INT bit (bit 0)
-	virturalWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to enable LED indicator
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value |= (1U << 0); //Set ENABLE LED_INT bit (bit 0)
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to enable the LED indicator
 }
+
+//Disable the on-board indicator LED on the NIR master device, Blue status LED
 void disableIndicator()
 {
 	selectDevice(AS72651_NIR);
 
-	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
-	value &= ~(1U << 0); //reset ENABLE_LED_INT bit (bit 0)
-	virturalWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to disable LED indicator
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= ~(1U << 0); //Reset ENABLE LED_INT bit (bit 0)
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to disable the LED indicator
 }
-void enableBulb(uint8_t device);
-void disableBulb(uint8_t device);
-void setGain(uint8_t gain);            //1 to 64x
-void setMeasurementMode(uint8_t mode); //4 channel, other 4 channel, 6 chan, or 6 chan one shot
-void setIntegrationCycles(uint8_t cycleValue);
-void setBulbCurrent(uint8_t current, uint8_t device);
 
-//Set the current limit of on-board LED. Max is 8mA = 0b11.
+//Enable the LED or bulb on a given device
+void enableLED(uint8_t device)
+{
+	selectDevice(device);
+
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value |= (1U << 3); //Set ENABLE LED_DRV bit (bit 3)
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to enable the LED driver
+}
+
+//Disable the LED or bulb on a given device
+void disableLED(uint8_t device)
+{
+	selectDevice(device);
+
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= ~(1U << 3); //Reset ENABLE LED_DRV bit (bit 3)
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to disable the LED driver
+}
+
+//Set the gain value
+//Gain 0: 1x
+//Gain 1: 3.7x (Default)
+//Gain 2: 16x
+//Gain 3: 64x
+void setGain(uint8_t gain)
+{
+	if (gain > AS7265X_GAIN_64X)
+	{
+		gain = AS7265X_GAIN_64X;
+	}
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG); //Read existing state
+	value &= 0b11001111; //Clear GAIN bits
+	value |= (gain << 4); //Set GAIN bits with user's choice
+
+	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register
+}
+
+//Set the measurement mode
+//Mode 0: 4 channels
+//Mode 1: 4 channels
+//Mode 2: All 6 channels (Default)
+//Mode 3: One shot operation of mode 2
+void setMeasurementMode(uint8_t mode)
+{
+	if (mode > AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT)
+	{
+		mode = AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT; //Limit mode to 2 bits
+	}
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG); //Read existing state
+	value &= 0b11110011; //Clear BANK bits
+	value |= (mode << 2); //Set BANK bits with user's choice
+
+	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register
+}
+void setIntegrationCycles(uint8_t cycleValue);
+
+//Set the current limit of chosen LED
+//Current 0: 12.5mA (Default)
+//Current 1: 25mA
+//Current 2: 50mA
+//Current 3: 100mA
+void setLEDCurrent(uint8_t current, uint8_t device)
+{
+	selectDevice(device);
+
+	if (current > AS7265X_LED_CURRENT_LIMIT_100MA)
+	{
+		current = AS7265X_LED_CURRENT_LIMIT_100MA;
+	}
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= 0b11001111; //Bitwise ANDing to reset LED current limit bits (bit5:4)
+	value |= (current << 4); //Set LED current limit
+
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to set the LED current limit
+}
+
+//Set the current limit of on-board LED indicator
+//Current 0: 1mA
+//Current 1: 2mA (Default)
+//Current 2: 4mA
+//Current 3: 8mA
 void setIndicatorCurrent(uint8_t current)
 {
 	selectDevice(AS72651_NIR);
@@ -272,11 +349,11 @@ void setIndicatorCurrent(uint8_t current)
 	{
 		current = AS7265X_INDICATOR_CURRENT_LIMIT_8MA;
 	}
-	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
-	value &= 0b11111001; //Bitwise ANDing to reset indicator limit bits (bit2:1)
-	value |= (current << 1);
+	uint8_t value = virtualReadRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= 0b11111001; //Bitwise ANDing to reset indicator current limit bits (bit2:1)
+	value |= (current << 1); //Set indicator current limit
 
-	virturalWriteRegister(AS7265X_LED_CONFIG, value);
+	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to set the LED indicator current limit
 }
 void enableInterrupt();
 void disableInterrupt();
@@ -284,9 +361,9 @@ void disableInterrupt();
 //Does a soft reset, wait at least 1000ms
 void softReset()
 {
-	uint8_t value = virturalWriteRegister(AS7265X_CONFIG); //Read existing state
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG); //Read existing state
 	value |= (1U<<7); //Set RST bit (bit 7)
-	virturalWriteRegister(AS7265X_CONFIG, value); //Write value to config register to trigger soft reset
+	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register to trigger soft reset
 }
 bool dataAvailable(); //Returns true when data is available
 

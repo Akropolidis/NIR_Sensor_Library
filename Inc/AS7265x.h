@@ -114,14 +114,14 @@ void takeMeasurementsWithBulb();
 void enableIndicator(); //Blue status LED
 void disableIndicator();
 
-void enableBulb(uint8_t device);
-void disableBulb(uint8_t device);
+void enableLED(uint8_t device);
+void disableLED(uint8_t device);
 
 void setGain(uint8_t gain);            //1 to 64x
 void setMeasurementMode(uint8_t mode); //4 channel, other 4 channel, 6 chan, or 6 chan one shot
 void setIntegrationCycles(uint8_t cycleValue);
 
-void setBulbCurrent(uint8_t current, uint8_t device); //
+void setLEDCurrent(uint8_t current, uint8_t device); //
 void setIndicatorCurrent(uint8_t current);            //0 to 8mA
 
 void enableInterrupt();

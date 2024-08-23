@@ -161,12 +161,97 @@ Discarded input sections
                 0x0000000000000000       0x48 ./Src/AS7265x.o
  .text.getCalibratedValue
                 0x0000000000000000       0x92 ./Src/AS7265x.o
- .debug_info    0x0000000000000000      0x38c ./Src/AS7265x.o
- .debug_abbrev  0x0000000000000000      0x13f ./Src/AS7265x.o
+ .text.getDeviceType
+                0x0000000000000000       0x10 ./Src/AS7265x.o
+ .text.getHardwareVersion
+                0x0000000000000000       0x10 ./Src/AS7265x.o
+ .text.getMajorFirmwareVersion
+                0x0000000000000000       0x20 ./Src/AS7265x.o
+ .text.getPatchFirmwareVersion
+                0x0000000000000000       0x20 ./Src/AS7265x.o
+ .text.getBuildFirmwareVersion
+                0x0000000000000000       0x20 ./Src/AS7265x.o
+ .text.getTemperature
+                0x0000000000000000       0x22 ./Src/AS7265x.o
+ .text.getTemperatureAverage
+                0x0000000000000000       0x5c ./Src/AS7265x.o
+ .text.enableIndicator
+                0x0000000000000000       0x30 ./Src/AS7265x.o
+ .text.disableIndicator
+                0x0000000000000000       0x30 ./Src/AS7265x.o
+ .text.enableLED
+                0x0000000000000000       0x36 ./Src/AS7265x.o
+ .text.disableLED
+                0x0000000000000000       0x36 ./Src/AS7265x.o
+ .text.setGain  0x0000000000000000       0x48 ./Src/AS7265x.o
+ .text.setMeasurementMode
+                0x0000000000000000       0x48 ./Src/AS7265x.o
+ .text.setLEDCurrent
+                0x0000000000000000       0x56 ./Src/AS7265x.o
+ .text.setIndicatorCurrent
+                0x0000000000000000       0x4e ./Src/AS7265x.o
+ .text.softReset
+                0x0000000000000000       0x2a ./Src/AS7265x.o
+ .text.getRawA  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawB  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawC  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawD  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawE  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawF  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawG  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawH  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawI  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawJ  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawK  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawL  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawR  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawS  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawT  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawU  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawV  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getRawW  0x0000000000000000       0x12 ./Src/AS7265x.o
+ .text.getCalibratedA
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedB
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedC
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedD
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedE
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedF
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedG
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedH
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedI
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedJ
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedK
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedL
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedR
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedS
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedT
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedU
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedV
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .text.getCalibratedW
+                0x0000000000000000       0x16 ./Src/AS7265x.o
+ .debug_info    0x0000000000000000      0x91e ./Src/AS7265x.o
+ .debug_abbrev  0x0000000000000000      0x23c ./Src/AS7265x.o
  .debug_aranges
-                0x0000000000000000       0x60 ./Src/AS7265x.o
+                0x0000000000000000      0x200 ./Src/AS7265x.o
  .debug_rnglists
-                0x0000000000000000       0x46 ./Src/AS7265x.o
+                0x0000000000000000      0x17e ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0x20b ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0xaba ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x22 ./Src/AS7265x.o
@@ -207,11 +292,11 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x11f ./Src/AS7265x.o
  .debug_macro   0x0000000000000000     0xb850 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x43 ./Src/AS7265x.o
- .debug_macro   0x0000000000000000      0x166 ./Src/AS7265x.o
- .debug_line    0x0000000000000000      0x8b9 ./Src/AS7265x.o
- .debug_str     0x0000000000000000    0x53318 ./Src/AS7265x.o
+ .debug_macro   0x0000000000000000      0x160 ./Src/AS7265x.o
+ .debug_line    0x0000000000000000      0xe48 ./Src/AS7265x.o
+ .debug_str     0x0000000000000000    0x535dd ./Src/AS7265x.o
  .comment       0x0000000000000000       0x44 ./Src/AS7265x.o
- .debug_frame   0x0000000000000000      0x15c ./Src/AS7265x.o
+ .debug_frame   0x0000000000000000      0x764 ./Src/AS7265x.o
  .ARM.attributes
                 0x0000000000000000       0x34 ./Src/AS7265x.o
  .group         0x0000000000000000        0xc ./Src/i2c.o
