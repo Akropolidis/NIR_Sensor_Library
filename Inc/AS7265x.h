@@ -14,7 +14,6 @@ extern "C" {
 #include "systick.h"
 #include "stm32f4xx.h"
 
-#define SYS_CLK								16000000
 
 /*I2C Slave Device Address and Physical Registers*/
 #define AS7265X_ADDR						0x49
@@ -107,7 +106,7 @@ uint8_t getPatchFirmwareVersion();
 uint8_t getBuildFirmwareVersion();
 
 uint8_t getTemperature(uint8_t deviceNumber); //Get temp in C of the master IC
-float getTemperatureAverage();                    //Get average of all three ICs
+float getTemperatureAverage(); //Get average of all three ICs
 
 void takeMeasurements();
 void takeMeasurementsWithBulb();

@@ -182,10 +182,113 @@ b. calBytes = WWWWWWWW XXXXXXXX YYYYYYYY ZZZZZZZZ
 */
 }
 
+uint8_t getDeviceType()
+{
+	return (virtualReadRegister(AS7265X_HW_VERSION_HIGH));
+}
 
+uint8_t getHardwareVersion()
+{
+	return (virtualReadRegister(AS7265X_HW_VERSION_LOW));
+}
 
+uint8_t getMajorFirmwareVersion()
+{
+	virtualWriteRegister(AS7265X_FW_VERSION_HIGH, 0x01); //Set to 0x01 for Major
+	virtualWriteRegister(AS7265X_FW_VERSION_LOW, 0x01);  //Set to 0x01 for Major
 
+	return (virtualReadRegister(AS7265X_FW_VERSION_HIGH));
+}
 
+uint8_t getPatchFirmwareVersion()
+{
+	virtualWriteRegister(AS7265X_FW_VERSION_HIGH, 0x02); //Set to 0x02 for Patch
+	virtualWriteRegister(AS7265X_FW_VERSION_LOW, 0x02);  //Set to 0x02 for Patch
+
+	return (virtualReadRegister(AS7265X_FW_VERSION_HIGH));
+}
+
+uint8_t getBuildFirmwareVersion()
+{
+	virtualWriteRegister(AS7265X_FW_VERSION_HIGH, 0x03); //Set to 0x03 for Build
+	virtualWriteRegister(AS7265X_FW_VERSION_LOW, 0x03);  //Set to 0x03 for Build
+
+	return (virtualReadRegister(AS7265X_FW_VERSION_HIGH));
+}
+
+//Returns the temperature of a given device in C
+uint8_t getTemperature(uint8_t deviceNumber)
+{
+	selectDevice(deviceNumber);
+	return (virtualReadRegister(AS7265X_DEVICE_TEMP));
+}
+
+//Get average temperature in C of all three sensors
+float getTemperatureAverage()
+{
+	float average = 0;
+
+	for (uint8_t i = 0; i < 3; i++)
+	{
+		average += getTemperature(i);
+	}
+
+	average = (average / 3);
+	return average;
+}
+void takeMeasurements();
+void takeMeasurementsWithBulb();
+
+//Enable the on-board indicator LED on the NIR master device, Blue status LED
+void enableIndicator()
+{
+	selectDevice(AS72651_NIR);
+
+	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
+	value |= (1U << 0); //Set ENABLE_LED_INT bit (bit 0)
+	virturalWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to enable LED indicator
+}
+void disableIndicator()
+{
+	selectDevice(AS72651_NIR);
+
+	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= ~(1U << 0); //reset ENABLE_LED_INT bit (bit 0)
+	virturalWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to disable LED indicator
+}
+void enableBulb(uint8_t device);
+void disableBulb(uint8_t device);
+void setGain(uint8_t gain);            //1 to 64x
+void setMeasurementMode(uint8_t mode); //4 channel, other 4 channel, 6 chan, or 6 chan one shot
+void setIntegrationCycles(uint8_t cycleValue);
+void setBulbCurrent(uint8_t current, uint8_t device);
+
+//Set the current limit of on-board LED. Max is 8mA = 0b11.
+void setIndicatorCurrent(uint8_t current)
+{
+	selectDevice(AS72651_NIR);
+
+	if (current > AS7265X_INDICATOR_CURRENT_LIMIT_8MA)
+	{
+		current = AS7265X_INDICATOR_CURRENT_LIMIT_8MA;
+	}
+	uint8_t value = virturalWriteRegister(AS7265X_LED_CONFIG); //Read existing state
+	value &= 0b11111001; //Bitwise ANDing to reset indicator limit bits (bit2:1)
+	value |= (current << 1);
+
+	virturalWriteRegister(AS7265X_LED_CONFIG, value);
+}
+void enableInterrupt();
+void disableInterrupt();
+
+//Does a soft reset, wait at least 1000ms
+void softReset()
+{
+	uint8_t value = virturalWriteRegister(AS7265X_CONFIG); //Read existing state
+	value |= (1U<<7); //Set RST bit (bit 7)
+	virturalWriteRegister(AS7265X_CONFIG, value); //Write value to config register to trigger soft reset
+}
+bool dataAvailable(); //Returns true when data is available
 
 
 
