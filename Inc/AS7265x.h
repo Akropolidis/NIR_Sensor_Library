@@ -109,7 +109,7 @@ uint8_t getTemperature(uint8_t deviceNumber); //Get temp in C of the master IC
 float getTemperatureAverage(); //Get average of all three ICs
 
 void takeMeasurements();
-void takeMeasurementsWithBulb();
+void takeMeasurementsWithLED();
 
 void enableIndicator(); //Blue status LED
 void disableIndicator();

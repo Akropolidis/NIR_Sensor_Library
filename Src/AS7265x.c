@@ -110,6 +110,7 @@ static void virtualWriteRegister(uint8_t virtualAddr, uint8_t dataToWrite)
 		if((getMillis() - startTime) > maxWaitTime)
 		{
 			printf("Sensor failed to respond \n\r");
+			return;
 		}
 		//Read slave I2C status to see if the write register is ready
 		status = readRegister(AS7265X_STATUS_REG);
@@ -130,6 +131,7 @@ static void virtualWriteRegister(uint8_t virtualAddr, uint8_t dataToWrite)
 		if((getMillis() - startTime) > maxWaitTime)
 		{
 			printf("Sensor failed to respond \n\r");
+			return;
 		}
 		//Read slave I2C status to see if the write register is ready
 		status = readRegister(AS7265X_STATUS_REG);
@@ -352,12 +354,45 @@ void setIntegrationCycles(uint8_t cycleValue)
 	virtualWriteRegister(AS7265X_INTEGRATION_TIME, cycleValue);
 }
 
+//Returns true when data is available to be read by checking config register
+bool dataAvailable()
+{
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG);
+	return (value & (1U<<1)); //Bit 1 is DATA_RDY bit
+}
+
 //Tells IC to take all channel measurements and polls for data ready flag
 void takeMeasurements()
 {
 	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
+
+	//Wait for data to be ready
+	unsigned long startTime = getMillis();
+	while (dataAvailable() == false)
+	{
+		if ((getMillis() - startTime ) > maxWaitTime)
+		{
+			printf("Sensor failed to respond \n\r");
+			return;
+		}
+		delayMillis(AS7265X_POLLING_DELAY);
+	}
+	//Readings can now be obtained, either Calibrated or RAW
 }
-void takeMeasurementsWithBulb();
+
+//Turns on all LEDs, takes measurements of all channels, and turns off all LEDs
+void takeMeasurementsWithLED()
+{
+	enableLED(AS7265x_LED_WHITE);
+	enableLED(AS7265x_LED_IR);
+	enableLED(AS7265x_LED_UV);
+
+	takeMeasurements();
+
+	disableLED(AS7265x_LED_WHITE);
+	disableLED(AS7265x_LED_IR);
+	disableLED(AS7265x_LED_UV);
+}
 
 //Set the current limit of chosen LED
 //Current 0: 12.5mA (Default)
@@ -398,8 +433,24 @@ void setIndicatorCurrent(uint8_t current)
 
 	virtualWriteRegister(AS7265X_LED_CONFIG, value); //Write value to LED config register to set the LED indicator current limit
 }
-void enableInterrupt();
-void disableInterrupt();
+
+//Enable interrupt pin
+void enableInterrupt()
+{
+
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG); //Read existing state
+	value |= (1U << 6); //Set INT bit (bit 6)
+	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register to enable the interrupt pin
+}
+
+//Disable interrupt pin
+void disableInterrupt()
+{
+
+	uint8_t value = virtualReadRegister(AS7265X_CONFIG); //Read existing state
+	value &= ~(1U << 6); //Set INT bit (bit 6)
+	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register to disable the interrupt pin
+}
 
 //Does a soft reset, wait at least 1000ms
 void softReset()
@@ -408,8 +459,6 @@ void softReset()
 	value |= (1U<<7); //Set RST bit (bit 7)
 	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register to trigger soft reset
 }
-bool dataAvailable(); //Returns true when data is available
-
 
 
 /* Obtaining various raw light readings */

@@ -189,10 +189,20 @@ Discarded input sections
                 0x0000000000000000       0x48 ./Src/AS7265x.o
  .text.setIntegrationCycles
                 0x0000000000000000       0x68 ./Src/AS7265x.o
+ .text.dataAvailable
+                0x0000000000000000       0x28 ./Src/AS7265x.o
+ .text.takeMeasurements
+                0x0000000000000000       0x54 ./Src/AS7265x.o
+ .text.takeMeasurementsWithLED
+                0x0000000000000000       0x30 ./Src/AS7265x.o
  .text.setLEDCurrent
                 0x0000000000000000       0x56 ./Src/AS7265x.o
  .text.setIndicatorCurrent
                 0x0000000000000000       0x4e ./Src/AS7265x.o
+ .text.enableInterrupt
+                0x0000000000000000       0x2a ./Src/AS7265x.o
+ .text.disableInterrupt
+                0x0000000000000000       0x2a ./Src/AS7265x.o
  .text.softReset
                 0x0000000000000000       0x2a ./Src/AS7265x.o
  .text.getRawA  0x0000000000000000       0x12 ./Src/AS7265x.o
@@ -249,12 +259,12 @@ Discarded input sections
                 0x0000000000000000       0x16 ./Src/AS7265x.o
  .text.getCalibratedW
                 0x0000000000000000       0x16 ./Src/AS7265x.o
- .debug_info    0x0000000000000000      0x992 ./Src/AS7265x.o
- .debug_abbrev  0x0000000000000000      0x25c ./Src/AS7265x.o
+ .debug_info    0x0000000000000000      0xa50 ./Src/AS7265x.o
+ .debug_abbrev  0x0000000000000000      0x28d ./Src/AS7265x.o
  .debug_aranges
-                0x0000000000000000      0x208 ./Src/AS7265x.o
+                0x0000000000000000      0x230 ./Src/AS7265x.o
  .debug_rnglists
-                0x0000000000000000      0x185 ./Src/AS7265x.o
+                0x0000000000000000      0x1a3 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0x20b ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0xaba ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x22 ./Src/AS7265x.o
@@ -296,10 +306,10 @@ Discarded input sections
  .debug_macro   0x0000000000000000     0xb850 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x43 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0x160 ./Src/AS7265x.o
- .debug_line    0x0000000000000000      0xeca ./Src/AS7265x.o
- .debug_str     0x0000000000000000    0x53622 ./Src/AS7265x.o
+ .debug_line    0x0000000000000000      0xf7e ./Src/AS7265x.o
+ .debug_str     0x0000000000000000    0x53680 ./Src/AS7265x.o
  .comment       0x0000000000000000       0x44 ./Src/AS7265x.o
- .debug_frame   0x0000000000000000      0x788 ./Src/AS7265x.o
+ .debug_frame   0x0000000000000000      0x834 ./Src/AS7265x.o
  .ARM.attributes
                 0x0000000000000000       0x34 ./Src/AS7265x.o
  .group         0x0000000000000000        0xc ./Src/i2c.o
