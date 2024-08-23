@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 #include <stdio.h>
 #include "uart.h"
 #include "i2c.h"
@@ -97,7 +98,7 @@ extern "C" {
 #define AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS	0b10
 #define AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT 	0b11
 
-bool begin();
+void begin();
 bool isConnected(); //Checks if sensor ACK the I2C request
 uint8_t getDeviceType();
 uint8_t getHardwareVersion();
@@ -131,6 +132,31 @@ void softReset();
 
 bool dataAvailable(); //Returns true when data is available
 
+//Get the various raw readings
+//UV - AS72653
+uint16_t getRawA();
+uint16_t getRawB();
+uint16_t getRawC();
+uint16_t getRawD();
+uint16_t getRawE();
+uint16_t getRawF();
+
+//VISIBLE - AS72652
+uint16_t getRawG();
+uint16_t getRawH();
+uint16_t getRawI();
+uint16_t getRawJ();
+uint16_t getRawK();
+uint16_t getRawL();
+
+//NIR - AS72651
+uint16_t getRawR();
+uint16_t getRawS();
+uint16_t getRawT();
+uint16_t getRawU();
+uint16_t getRawV();
+uint16_t getRawW();
+
 //Returns the various calibration data
 float getCalibratedA();
 float getCalibratedB();
@@ -152,28 +178,6 @@ float getCalibratedT();
 float getCalibratedU();
 float getCalibratedV();
 float getCalibratedW();
-
-//Get the various raw readings
-uint16_t getA();
-uint16_t getB();
-uint16_t getC();
-uint16_t getD();
-uint16_t getE();
-uint16_t getF();
-
-uint16_t getG();
-uint16_t getH();
-uint16_t getI();
-uint16_t getJ();
-uint16_t getK();
-uint16_t getL();
-
-uint16_t getR();
-uint16_t getS();
-uint16_t getT();
-uint16_t getU();
-uint16_t getV();
-uint16_t getW();
 
 
 #ifdef __cplusplus

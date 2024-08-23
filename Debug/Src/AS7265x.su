@@ -1,5 +1,9 @@
 ../Src/AS7265x.c:21:6:begin	8	static
 ../Src/AS7265x.c:28:16:readRegister	24	static
 ../Src/AS7265x.c:36:13:writeRegister	56	dynamic
-../Src/AS7265x.c:45:16:virtualReadRegister	24	static
-../Src/AS7265x.c:86:13:virtualWriteRegister	24	static
+../Src/AS7265x.c:46:16:virtualReadRegister	24	static
+../Src/AS7265x.c:88:13:virtualWriteRegister	24	static
+../Src/AS7265x.c:124:13:selectDevice	16	static
+../Src/AS7265x.c:130:7:convertBytesToFloat	24	static
+../Src/AS7265x.c:138:17:getChannel	24	static
+../Src/AS7265x.c:148:14:getCalibratedValue	24	static

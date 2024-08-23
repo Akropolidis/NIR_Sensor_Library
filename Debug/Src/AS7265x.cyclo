@@ -1,5 +1,9 @@
 ../Src/AS7265x.c:21:6:begin	1
 ../Src/AS7265x.c:28:16:readRegister	1
 ../Src/AS7265x.c:36:13:writeRegister	1
-../Src/AS7265x.c:45:16:virtualReadRegister	4
-../Src/AS7265x.c:86:13:virtualWriteRegister	3
+../Src/AS7265x.c:46:16:virtualReadRegister	4
+../Src/AS7265x.c:88:13:virtualWriteRegister	3
+../Src/AS7265x.c:124:13:selectDevice	1
+../Src/AS7265x.c:130:7:convertBytesToFloat	1
+../Src/AS7265x.c:138:17:getChannel	1
+../Src/AS7265x.c:148:14:getCalibratedValue	1
