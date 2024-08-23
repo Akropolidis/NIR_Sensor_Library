@@ -20,6 +20,7 @@ static float getCalibratedValue(uint8_t calAddress, uint8_t device);
 //Returns false if sensor is not detected
 void begin()
 {
+	SysTick_Init();
 	uart2_rxtx_init();
 	I2C1_init();
 }
@@ -55,29 +56,42 @@ static uint8_t virtualReadRegister(uint8_t virtualAddr)
 	}
 
 	//Wait for WRITE flag to clear
+	unsigned long startTime = getMillis();
 	while(1)
 	{
+		if((getMillis() - startTime) > maxWaitTime)
+		{
+			printf("Sensor failed to respond \n\r");
+			return 0;
+		}
 		//Read slave I2C status to see if the read register is ready
 		status = readRegister(AS7265X_STATUS_REG);
 		if((status & AS7265X_TX_VALID) == 0) //New data may be written to WRITE register
 		{
 			break;
 		}
-		systickDelayMs(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
+		delayMillis(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
 	}
 
 	//Send the virtual register address (disabling bit 7 to indicate a read).
 	writeRegister(AS7265X_WRITE_REG, virtualAddr);
 
+	//Wait for READ flag to be set
+	startTime = getMillis();
 	while(1)
 	{
+		if((getMillis() - startTime) > maxWaitTime)
+		{
+			printf("Sensor failed to respond \n\r");
+			return 0;
+		}
 		//Read slave I2C status to see if the read register is ready
 		status = readRegister(AS7265X_STATUS_REG);
 		if((status & AS7265X_RX_VALID) != 0) //New data may be written to WRITE register
 		{
 			break;
 		}
-		systickDelayMs(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
+		delayMillis(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
 	}
 
 	data = readRegister(AS7265X_READ_REG);
@@ -90,30 +104,40 @@ static void virtualWriteRegister(uint8_t virtualAddr, uint8_t dataToWrite)
 	volatile uint8_t status;
 
 	//Wait for WRITE register to be empty
+	unsigned long startTime = getMillis();
 	while(1)
 	{
+		if((getMillis() - startTime) > maxWaitTime)
+		{
+			printf("Sensor failed to respond \n\r");
+		}
 		//Read slave I2C status to see if the write register is ready
 		status = readRegister(AS7265X_STATUS_REG);
 		if((status & AS7265X_TX_VALID) == 0) //New data may be written to WRITE register
 		{
 			break;
 		}
-		systickDelayMs(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
+		delayMillis(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
 	}
 
 	//Send the virtual register address (enabling bit 7 to indicate a write).
 	writeRegister(AS7265X_WRITE_REG, (virtualAddr | 1 << 7));
 
 	//Wait for WRITE register to be empty
+	startTime = getMillis();
 	while(1)
 	{
+		if((getMillis() - startTime) > maxWaitTime)
+		{
+			printf("Sensor failed to respond \n\r");
+		}
 		//Read slave I2C status to see if the write register is ready
 		status = readRegister(AS7265X_STATUS_REG);
 		if((status & AS7265X_TX_VALID) == 0) //New data may be written to WRITE register
 		{
 			break;
 		}
-		systickDelayMs(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
+		delayMillis(AS7265X_POLLING_DELAY); //Delay for 5 ms before checking for virtual register changes
 	}
 
 	//Send the data to complete the operation
@@ -236,8 +260,6 @@ float getTemperatureAverage()
 	average = (average / 3);
 	return average;
 }
-void takeMeasurements();
-void takeMeasurementsWithBulb();
 
 //Enable the on-board indicator LED on the NIR master device, Blue status LED
 void enableIndicator()
@@ -314,7 +336,28 @@ void setMeasurementMode(uint8_t mode)
 
 	virtualWriteRegister(AS7265X_CONFIG, value); //Write value to config register
 }
-void setIntegrationCycles(uint8_t cycleValue);
+
+//Set the Integration cycles with a byte from 0 - 255 to set the sensitivity
+//Ever 2.78ms of integration increases the resolution of the ADC by 2^10 = 1024 counts
+//Longer integration time means a more accurate measurement
+//16-bit ADC so full sensitivity scale is clamped at 2^16 = 65536
+void setIntegrationCycles(uint8_t cycleValue)
+{
+	if (cycleValue > 255)
+	{
+		cycleValue = 255; //Limit cycleValue to a byte 2^8 (0-255)
+	}
+	maxWaitTime = (int)((cycleValue + 1) * 2.78 * 1.5); //Wait for integration time + 50%
+
+	virtualWriteRegister(AS7265X_INTEGRATION_TIME, cycleValue);
+}
+
+//Tells IC to take all channel measurements and polls for data ready flag
+void takeMeasurements()
+{
+	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
+}
+void takeMeasurementsWithBulb();
 
 //Set the current limit of chosen LED
 //Current 0: 12.5mA (Default)
