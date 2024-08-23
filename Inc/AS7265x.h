@@ -97,7 +97,7 @@ extern "C" {
 #define AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS	0b10
 #define AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT 	0b11 //One-Shot operation of mode 2
 
-void begin();
+bool begin();
 bool isConnected(); //Checks if sensor ACK the I2C request
 uint8_t getDeviceType();
 uint8_t getHardwareVersion();

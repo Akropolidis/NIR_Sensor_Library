@@ -18,11 +18,88 @@ static float getCalibratedValue(uint8_t calAddress, uint8_t device);
 
 //Initializes the sensor with basic settings
 //Returns false if sensor is not detected
-void begin()
+bool begin()
 {
 	SysTick_Init();
 	uart2_rxtx_init();
 	I2C1_init();
+
+	if (isConnected() == false)
+	{
+		return false; //Check for sensor presence
+	}
+
+	uint8_t value = virtualReadRegister(AS7265X_DEV_SELECT_CONTROL);
+	if ((value & 0b00110000) == 0) //Check for presence of first and second slave devices
+	{
+		return false;
+	}
+
+	setLEDCurrent(AS7265X_LED_CURRENT_LIMIT_12_5MA, AS7265x_LED_WHITE);
+	setLEDCurrent(AS7265X_LED_CURRENT_LIMIT_12_5MA, AS7265x_LED_IR);
+	setLEDCurrent(AS7265X_LED_CURRENT_LIMIT_12_5MA, AS7265x_LED_UV);
+
+	disableLED(AS7265x_LED_WHITE); //Turn off bulb to avoid heating sensor
+	disableLED(AS7265x_LED_IR);
+	disableLED(AS7265x_LED_UV);
+
+	setIndicatorCurrent(AS7265X_INDICATOR_CURRENT_LIMIT_8MA);
+	enableIndicator();
+
+	setIntegrationCycles(49); //50 * 2.78ms = 139ms. 0 to 255 is valid.
+	//If you use Mode 2 or 3 (all the colors) then integration time is double. 139*2 = 278ms between readings.
+
+	setGain(AS7265X_GAIN_64X);
+
+	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
+
+	enableInterrupt();
+
+	return true;
+
+}
+
+//Returns TRUE if the device sends an ACK indicating it is connected
+bool isConnected()
+{
+	uint32_t timeout = 1000; //Timeout to connect set to 1000ms
+	unsigned long startTime = getMillis();
+
+	while ((getMillis() - startTime) < timeout)
+	{
+		volatile int tmp;
+
+		/* Wait until bus not busy */
+		while (I2C1->SR2 & (SR2_BUSY)){}
+
+		/* Generate start condition */
+		I2C1->CR1 |= CR1_START;
+
+		/* Wait until start condition flag is set */
+		while (!(I2C1->SR1 & (SR1_SB))){}
+
+		/* Transmit slave address + Write (0) */
+		I2C1->DR = AS7265X_WRITE_ADDR;
+
+		/* Wait until address flag is set */
+		while (!(I2C1->SR1 & (SR1_ADDR))){}
+
+		/* Clear address flag by reading SR2 register */
+		tmp = I2C1->SR2;
+
+		if (I2C1->SR1 & SR1_AF)
+		{
+			//No ACK received, address not acknowledged
+			I2C1->CR1 |= CR1_STOP;  // Send STOP condition
+			continue;
+		}
+
+		//Address acknowledged, device is connected
+		I2C1->CR1 |= CR1_STOP; // Send STOP condition
+		return true;
+	}
+	//Timeout to connect has expired, hence device is not connected
+	return false;
 }
 
 //Reads from a given location from the AS726x

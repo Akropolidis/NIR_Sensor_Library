@@ -139,12 +139,15 @@ Discarded input sections
  .group         0x0000000000000000        0xc ./Src/AS7265x.o
  .group         0x0000000000000000        0xc ./Src/AS7265x.o
  .group         0x0000000000000000        0xc ./Src/AS7265x.o
+ .group         0x0000000000000000        0xc ./Src/AS7265x.o
  .text          0x0000000000000000        0x0 ./Src/AS7265x.o
  .data          0x0000000000000000        0x0 ./Src/AS7265x.o
  .bss           0x0000000000000000        0x0 ./Src/AS7265x.o
  .bss.maxWaitTime
                 0x0000000000000000        0x2 ./Src/AS7265x.o
- .text.begin    0x0000000000000000       0x14 ./Src/AS7265x.o
+ .text.begin    0x0000000000000000       0x92 ./Src/AS7265x.o
+ .text.isConnected
+                0x0000000000000000       0xa0 ./Src/AS7265x.o
  .text.readRegister
                 0x0000000000000000       0x26 ./Src/AS7265x.o
  .text.writeRegister
@@ -259,13 +262,13 @@ Discarded input sections
                 0x0000000000000000       0x16 ./Src/AS7265x.o
  .text.getCalibratedW
                 0x0000000000000000       0x16 ./Src/AS7265x.o
- .debug_info    0x0000000000000000      0xa50 ./Src/AS7265x.o
- .debug_abbrev  0x0000000000000000      0x28d ./Src/AS7265x.o
+ .debug_info    0x0000000000000000      0xb59 ./Src/AS7265x.o
+ .debug_abbrev  0x0000000000000000      0x2ca ./Src/AS7265x.o
  .debug_aranges
-                0x0000000000000000      0x230 ./Src/AS7265x.o
+                0x0000000000000000      0x238 ./Src/AS7265x.o
  .debug_rnglists
-                0x0000000000000000      0x1a3 ./Src/AS7265x.o
- .debug_macro   0x0000000000000000      0x20b ./Src/AS7265x.o
+                0x0000000000000000      0x1ab ./Src/AS7265x.o
+ .debug_macro   0x0000000000000000      0x20a ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0xaba ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x22 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x8e ./Src/AS7265x.o
@@ -305,13 +308,15 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x11f ./Src/AS7265x.o
  .debug_macro   0x0000000000000000     0xb850 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000       0x43 ./Src/AS7265x.o
+ .debug_macro   0x0000000000000000       0x64 ./Src/AS7265x.o
  .debug_macro   0x0000000000000000      0x160 ./Src/AS7265x.o
- .debug_line    0x0000000000000000      0xf7e ./Src/AS7265x.o
- .debug_str     0x0000000000000000    0x53680 ./Src/AS7265x.o
+ .debug_line    0x0000000000000000     0x1049 ./Src/AS7265x.o
+ .debug_str     0x0000000000000000    0x537b1 ./Src/AS7265x.o
  .comment       0x0000000000000000       0x44 ./Src/AS7265x.o
- .debug_frame   0x0000000000000000      0x834 ./Src/AS7265x.o
+ .debug_frame   0x0000000000000000      0x860 ./Src/AS7265x.o
  .ARM.attributes
                 0x0000000000000000       0x34 ./Src/AS7265x.o
+ .group         0x0000000000000000        0xc ./Src/i2c.o
  .group         0x0000000000000000        0xc ./Src/i2c.o
  .group         0x0000000000000000        0xc ./Src/i2c.o
  .group         0x0000000000000000        0xc ./Src/i2c.o
@@ -345,7 +350,7 @@ Discarded input sections
                 0x0000000000000000       0x38 ./Src/i2c.o
  .debug_rnglists
                 0x0000000000000000       0x29 ./Src/i2c.o
- .debug_macro   0x0000000000000000      0x12c ./Src/i2c.o
+ .debug_macro   0x0000000000000000       0xdd ./Src/i2c.o
  .debug_macro   0x0000000000000000      0xaba ./Src/i2c.o
  .debug_macro   0x0000000000000000       0x22 ./Src/i2c.o
  .debug_macro   0x0000000000000000       0x8e ./Src/i2c.o
@@ -362,8 +367,9 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x11f ./Src/i2c.o
  .debug_macro   0x0000000000000000     0xb850 ./Src/i2c.o
  .debug_macro   0x0000000000000000       0x43 ./Src/i2c.o
+ .debug_macro   0x0000000000000000       0x5e ./Src/i2c.o
  .debug_line    0x0000000000000000      0x8eb ./Src/i2c.o
- .debug_str     0x0000000000000000    0x4f298 ./Src/i2c.o
+ .debug_str     0x0000000000000000    0x4f2a8 ./Src/i2c.o
  .comment       0x0000000000000000       0x44 ./Src/i2c.o
  .debug_frame   0x0000000000000000       0xa8 ./Src/i2c.o
  .ARM.attributes
