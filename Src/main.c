@@ -4,17 +4,15 @@
 
 int main(void)
 {
-	bool works = 1;
-	works = begin();
+	bool works = begin();
+
+	disableLED(AS7265x_LED_WHITE);
 	while(1)
 	{
-		enableLED(AS7265x_LED_UV);
-		delayMillis(1000);
-		disableLED(AS7265x_LED_UV);
-		delayMillis(1000);
+		uint8_t red = getRawI();
+		printf("Red: %d\n\r", red);
 //		uint8_t hardware= getHardwareVersion();
-//		printf("works: %d\n\r", works);
-//		printf("Hardware Version: %d\n\r", hardware);
+//		printf("Works: %d\n\r", works);
 
 	}
 }

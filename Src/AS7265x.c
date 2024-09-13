@@ -43,7 +43,7 @@ bool begin()
 	disableLED(AS7265x_LED_IR);
 	disableLED(AS7265x_LED_UV);
 
-	setIndicatorCurrent(AS7265X_INDICATOR_CURRENT_LIMIT_8MA);
+	setIndicatorCurrent(AS7265X_INDICATOR_CURRENT_LIMIT_2MA);
 	enableIndicator();
 
 	setIntegrationCycles(49); //50 * 2.78ms = 139ms. 0 to 255 is valid.
@@ -51,12 +51,11 @@ bool begin()
 
 	setGain(AS7265X_GAIN_64X);
 
-	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
+	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS);
 
 	enableInterrupt();
 
 	return true;
-
 }
 
 //Returns TRUE if the device sends an ACK indicating it is connected
@@ -164,7 +163,7 @@ static uint8_t virtualReadRegister(uint8_t virtualAddr)
 		}
 		//Read slave I2C status to see if the read register is ready
 		status = readRegister(AS7265X_STATUS_REG);
-		if((status & AS7265X_RX_VALID) != 0) //New data may be written to WRITE register
+		if((status & AS7265X_RX_VALID) != 0) //Data byte available in READ register
 		{
 			break;
 		}

@@ -80,7 +80,7 @@ void I2C1_Init(void)
 	I2C1->CCR = I2C_FAST_DUTY; //Set to Fast mode and duty cycle of 16/9
 
 	/*Set rise time */
-	I2C1->TRISE = FS_MODE_MAX_RISE_TIME; //(300ns/(1/16MHz)+1 = 5.8
+	I2C1->TRISE = 6;//FS_MODE_MAX_RISE_TIME; //(300ns/(1/16MHz)+1 = 5.8
 
 	/*Enable I2C1 module */
 	I2C1->CR1 |= CR1_PE;
