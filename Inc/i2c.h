@@ -8,7 +8,10 @@
 #define I2C1EN					(1U<<21)
 
 #define I2C_100KHZ					80 //0B 0101 0000 = Decimal = 80
+#define I2C_400KHZ					26
+#define I2C_FAST_DUTY			((1U << 14) | (1U << 15))
 #define SD_MODE_MAX_RISE_TIME		17
+#define FS_MODE_MAX_RISE_TIME		5
 #define CR1_PE					(1U<<0)
 
 #define SR2_BUSY				(1U<<1)
@@ -22,7 +25,7 @@
 #define	SR1_BTF					(1U<<2)
 #define SR1_AF					(1U<<10)
 
-void I2C1_init(void);
+void I2C1_Init(void);
 void I2C1_byteRead(char saddr, char maddr, char* data);
 void I2C1_burstRead(char saddr, char maddr, int n, char* data);
 void I2C1_burstWrite(char saddr, char maddr, int n, char* data);

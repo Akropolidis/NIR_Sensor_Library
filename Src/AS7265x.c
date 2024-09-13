@@ -1,7 +1,7 @@
 #include "AS7265X.h"
 
 
-uint16_t maxWaitTime = 0; //Based on integration cycles
+uint16_t maxWaitTime = AS7265X_POLLING_DELAY; //Based on integration cycles
 
 static uint8_t readRegister(uint8_t addr);
 static void writeRegister(uint8_t addr, uint8_t val);
@@ -22,7 +22,7 @@ bool begin()
 {
 	SysTick_Init();
 	uart2_rxtx_init();
-	I2C1_init();
+	I2C1_Init();
 
 	if (isConnected() == false)
 	{

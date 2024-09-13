@@ -42,7 +42,9 @@ void I2C1_Init(void)
 	GPIOB->PUPDR |= (1U<<14);
 	GPIOB->PUPDR &= ~(1U<<15);
 
-	/*Set PB6 and PB7 alternate function type to I2C (AF4)*/
+	/*Set PB6 and PB7 alternate function type to I2C (AF4)
+	 * PB6 --> SCL
+	 * PB7 --> SDA*/
 	GPIOB->AFR[0] &= ~(1U<<24);
 	GPIOB->AFR[0] &= ~(1U<<25);
 	GPIOB->AFR[0] |= (1U<<26);
@@ -67,11 +69,18 @@ void I2C1_Init(void)
 	/*Set Peripheral clock frequency*/
 	I2C1->CR2 = (1U<<4);   //16 Mhz
 
-	/*Set I2C to standard mode, 100kHz clock */
-	I2C1->CCR = I2C_100KHZ; //CCR = PCLK/(2*12C_FREQ) 16MHz/(2*100KHz) = 80
+//	/*Set I2C to standard mode, 100kHz clock */
+//	I2C1->CCR = I2C_100KHZ; //CCR = PCLK/(2*12C_FREQ) = 16MHz/(2*100KHz) = 80
+//
+//	/*Set rise time */
+//	I2C1->TRISE = SD_MODE_MAX_RISE_TIME; //(1000ns/(1/16MHz)+1 = 17
+
+	/*Set I2C to fast mode, 400kHz clock */
+	I2C1->CCR = 1; //Refer to ST reference manual for derivation
+	I2C1->CCR = I2C_FAST_DUTY; //Set to Fast mode and duty cycle of 16/9
 
 	/*Set rise time */
-	I2C1->TRISE = SD_MODE_MAX_RISE_TIME; //(PCLK/10^6)+1 = 17
+	I2C1->TRISE = FS_MODE_MAX_RISE_TIME; //(300ns/(1/16MHz)+1 = 5.8
 
 	/*Enable I2C1 module */
 	I2C1->CR1 |= CR1_PE;
