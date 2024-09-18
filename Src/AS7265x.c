@@ -1,7 +1,7 @@
 #include "AS7265X.h"
 
 
-uint16_t maxWaitTime = 10; //Based on integration cycles
+uint16_t maxWaitTime = STARTUP_DELAY; //Based on integration cycles, initial delay of 10ms before checking for sensor status
 
 static uint8_t readRegister(uint8_t addr);
 static void writeRegister(uint8_t addr, uint8_t val);
@@ -168,7 +168,7 @@ static uint8_t virtualReadRegister(uint8_t virtualAddr)
 	{
 		if((getMillis() - startTime) > maxWaitTime)
 		{
-			printf("Sensor failed to respond2 \n\r");
+			printf("Sensor failed to respond \n\r");
 			return 0;
 		}
 		//Read slave I2C status to see if the read register is ready

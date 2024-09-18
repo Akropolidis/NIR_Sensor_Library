@@ -68,7 +68,8 @@ extern "C" {
 
 //Settings
 
-#define AS7265X_POLLING_DELAY 5 //Amount of ms to wait between checking for virtual register changes
+#define STARTUP_DELAY						10 //Amount of ms to before checking for sensor presence
+#define AS7265X_POLLING_DELAY	 			5 //Amount of ms to wait between checking for virtual register changes
 
 #define AS72651_NIR 						0x00
 #define AS72652_VISIBLE 					0x01

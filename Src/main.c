@@ -65,6 +65,14 @@ int main(void)
 		disableLED(AS7265x_LED_IR);
 		delayMillis(3000);
 
+
+		printf("\nRaw Data Channels \n\r");
+		for (int i = 0; i < NUM_CHANNELS; i++)
+		{
+//			printf("Channel %i: %u\n\r", i+1, channel_data[i]);
+			printf("%u\n\r", channel_data[i]);
+		}
+
 		// Calibrated Channels
 		enableLED(AS7265x_LED_UV);
 		delayMillis(3000);
@@ -98,6 +106,13 @@ int main(void)
 		channel_data_cal[15] = getCalibratedW();
 		disableLED(AS7265x_LED_IR);
 		delayMillis(3000);
+
+		printf("\nCalibrated Data Channels \n\r");
+		for (int i = 0; i < NUM_CHANNELS; i++)
+		{
+//			printf("Channel %i: %f\n\r", i+1, channel_data_cal[i]);
+			printf("%f\n\r", channel_data_cal[i]);
+		}
 
 		break;
 

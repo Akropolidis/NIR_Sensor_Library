@@ -1,2 +1,2 @@
-../Src/main.c:11:5:main	1
-../Src/main.c:112:6:log_data_to_csv	4
+../Src/main.c:11:5:main	3
+../Src/main.c:127:6:log_data_to_csv	4
