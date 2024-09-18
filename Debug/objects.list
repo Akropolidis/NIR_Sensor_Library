@@ -1,7 +1,6 @@
 "./Src/AS7265x.o"
 "./Src/i2c.o"
 "./Src/main.o"
-"./Src/motor_driver.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Src/systick.o"

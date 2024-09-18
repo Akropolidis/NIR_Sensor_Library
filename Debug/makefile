@@ -60,7 +60,7 @@ main-build: AS7265x.elf secondary-outputs
 
 # Tool invocations
 AS7265x.elf AS7265x.map: $(OBJS) $(USER_OBJS) C:\Users\adeya\OneDrive\Documents\STM32F4-Baremetal_Workspace\AS7265x\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "AS7265x.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\adeya\OneDrive\Documents\STM32F4-Baremetal_Workspace\AS7265x\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AS7265x.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "AS7265x.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\adeya\OneDrive\Documents\STM32F4-Baremetal_Workspace\AS7265x\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AS7265x.map" -Wl,--gc-sections -static -u_printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

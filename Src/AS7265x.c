@@ -1,7 +1,7 @@
 #include "AS7265X.h"
 
 
-uint16_t maxWaitTime = AS7265X_POLLING_DELAY; //Based on integration cycles
+uint16_t maxWaitTime = 10; //Based on integration cycles
 
 static uint8_t readRegister(uint8_t addr);
 static void writeRegister(uint8_t addr, uint8_t val);
@@ -23,6 +23,7 @@ bool begin()
 	SysTick_Init();
 	uart2_rxtx_init();
 	I2C1_Init();
+	fpu_enable();
 
 	if (isConnected() == false)
 	{
@@ -46,12 +47,12 @@ bool begin()
 	setIndicatorCurrent(AS7265X_INDICATOR_CURRENT_LIMIT_2MA);
 	enableIndicator();
 
-	setIntegrationCycles(49); //50 * 2.78ms = 139ms. 0 to 255 is valid.
+	setIntegrationCycles(49); //(49 + 1) * 2.78ms = 139ms. 0 to 255 is valid.
 	//If you use Mode 2 or 3 (all the colors) then integration time is double. 139*2 = 278ms between readings.
 
 	setGain(AS7265X_GAIN_64X);
 
-	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS);
+	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
 
 	enableInterrupt();
 
@@ -99,6 +100,15 @@ bool isConnected()
 	}
 	//Timeout to connect has expired, hence device is not connected
 	return false;
+}
+
+void fpu_enable()
+{
+	/*Enable Floating Point Unit: Enable CP10 and CP11 full access*/
+	SCB->CPACR |= (1U<<20);
+	SCB->CPACR |= (1U<<21);
+	SCB->CPACR |= (1U<<22);
+	SCB->CPACR |= (1U<<23);
 }
 
 //Reads from a given location from the AS726x
@@ -158,7 +168,7 @@ static uint8_t virtualReadRegister(uint8_t virtualAddr)
 	{
 		if((getMillis() - startTime) > maxWaitTime)
 		{
-			printf("Sensor failed to respond \n\r");
+			printf("Sensor failed to respond2 \n\r");
 			return 0;
 		}
 		//Read slave I2C status to see if the read register is ready
@@ -264,7 +274,7 @@ static float getCalibratedValue(uint8_t calAddress, uint8_t device)
 	calBytes |= ((uint32_t)chan2 << (8 * 1)); //bits 8-15
 	calBytes |= ((uint32_t)chan3 << (8 * 0)); //bits 0-7
 
-	return (convertBytesToFloat(calBytes));
+	return convertBytesToFloat(calBytes);
 
 /*1. 00000000 00000000 00000000 WWWWWWWW
 a. WWWWWWWW 00000000 00000000 00000000
@@ -416,7 +426,7 @@ void setMeasurementMode(uint8_t mode)
 }
 
 //Set the Integration cycles with a byte from 0 - 255 to set the sensitivity
-//Ever 2.78ms of integration increases the resolution of the ADC by 2^10 = 1024 counts
+//Every 2.78ms of integration increases the resolution of the ADC by 2^10 = 1024 counts
 //Longer integration time means a more accurate measurement
 //16-bit ADC so full sensitivity scale is clamped at 2^16 = 65536
 void setIntegrationCycles(uint8_t cycleValue)

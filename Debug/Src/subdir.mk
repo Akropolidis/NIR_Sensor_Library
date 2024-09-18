@@ -8,7 +8,6 @@ C_SRCS += \
 ../Src/AS7265x.c \
 ../Src/i2c.c \
 ../Src/main.c \
-../Src/motor_driver.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c \
 ../Src/systick.c \
@@ -18,7 +17,6 @@ OBJS += \
 ./Src/AS7265x.o \
 ./Src/i2c.o \
 ./Src/main.o \
-./Src/motor_driver.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o \
 ./Src/systick.o \
@@ -28,7 +26,6 @@ C_DEPS += \
 ./Src/AS7265x.d \
 ./Src/i2c.d \
 ./Src/main.d \
-./Src/motor_driver.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d \
 ./Src/systick.d \
@@ -42,7 +39,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/AS7265x.cyclo ./Src/AS7265x.d ./Src/AS7265x.o ./Src/AS7265x.su ./Src/i2c.cyclo ./Src/i2c.d ./Src/i2c.o ./Src/i2c.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/motor_driver.cyclo ./Src/motor_driver.d ./Src/motor_driver.o ./Src/motor_driver.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su ./Src/uart.cyclo ./Src/uart.d ./Src/uart.o ./Src/uart.su
+	-$(RM) ./Src/AS7265x.cyclo ./Src/AS7265x.d ./Src/AS7265x.o ./Src/AS7265x.su ./Src/i2c.cyclo ./Src/i2c.d ./Src/i2c.o ./Src/i2c.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/systick.cyclo ./Src/systick.d ./Src/systick.o ./Src/systick.su ./Src/uart.cyclo ./Src/uart.d ./Src/uart.o ./Src/uart.su
 
 .PHONY: clean-Src
 

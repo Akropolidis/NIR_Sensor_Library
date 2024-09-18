@@ -9,6 +9,7 @@ extern "C" {
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+//#include <errno.h>
 #include "uart.h"
 #include "i2c.h"
 #include "systick.h"
@@ -99,6 +100,7 @@ extern "C" {
 
 bool begin();
 bool isConnected(); //Checks if sensor ACK the I2C request
+void fpu_enable(); //Enable floating point unit
 uint8_t getDeviceType();
 uint8_t getHardwareVersion();
 uint8_t getMajorFirmwareVersion();
