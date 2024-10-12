@@ -18,7 +18,7 @@ static float getCalibratedValue(uint8_t calAddress, uint8_t device);
 
 //Initializes the sensor with basic settings
 //Returns false if sensor is not detected
-bool begin()
+bool initialize()
 {
 	SysTick_Init();
 	uart2_rxtx_init();
@@ -47,12 +47,12 @@ bool begin()
 	setIndicatorCurrent(AS7265X_INDICATOR_CURRENT_LIMIT_2MA);
 	enableIndicator();
 
-	setIntegrationCycles(49); //(49 + 1) * 2.78ms = 139ms. 0 to 255 is valid.
-	//If you use Mode 2 or 3 (all the colors) then integration time is double. 139*2 = 278ms between readings.
+	setIntegrationCycles(59); //(59 + 1) * 2.78ms = 166.8ms. 0 to 255 is valid.
+	//If you use Mode 2 or 3 (all the colors) then integration time is double. 166.8*2 = 333.6ms between readings.
 
 	setGain(AS7265X_GAIN_64X);
 
-	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT);
+	setMeasurementMode(AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS);
 
 	enableInterrupt();
 
@@ -274,7 +274,8 @@ static float getCalibratedValue(uint8_t calAddress, uint8_t device)
 	calBytes |= ((uint32_t)chan2 << (8 * 1)); //bits 8-15
 	calBytes |= ((uint32_t)chan3 << (8 * 0)); //bits 0-7
 
-	return convertBytesToFloat(calBytes);
+	float irradiance = convertBytesToFloat(calBytes) / IRRADIANCE_FACTOR;
+	return irradiance;
 
 /*1. 00000000 00000000 00000000 WWWWWWWW
 a. WWWWWWWW 00000000 00000000 00000000

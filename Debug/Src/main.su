@@ -1,2 +1,1 @@
-../Src/main.c:11:5:main	128	static
-../Src/main.c:127:6:log_data_to_csv	32	static
+../Src/main.c:8:5:main	128	static

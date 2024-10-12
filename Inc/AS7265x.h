@@ -99,7 +99,9 @@ extern "C" {
 #define AS7265X_MEASUREMENT_MODE_6CHAN_CONTINUOUS	0b10
 #define AS7265X_MEASUREMENT_MODE_6CHAN_ONE_SHOT 	0b11 //One-Shot operation of mode 2
 
-bool begin();
+#define IRRADIANCE_FACTOR							140  //35 counts/(uW/cm^2) at 16x --> x4 for 64x
+
+bool initialize();
 bool isConnected(); //Checks if sensor ACK the I2C request
 void fpu_enable(); //Enable floating point unit
 uint8_t getDeviceType();
