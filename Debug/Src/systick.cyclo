@@ -1,5 +1,0 @@
-C:/Users/adeya/OneDrive/Documents/STM32F4-Baremetal_Workspace/AS7265x/Drivers/CMSIS/Include/core_cm4.h:1816:22:__NVIC_SetPriority	2
-../Src/systick.c:13:6:SysTick_Init	1
-../Src/systick.c:35:6:SysTick_Handler	1
-../Src/systick.c:41:10:getMillis	1
-../Src/systick.c:46:6:delayMillis	2
