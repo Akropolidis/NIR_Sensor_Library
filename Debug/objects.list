@@ -1,4 +1,4 @@
-"./Src/AS7265x.o"
+"./Src/AS7421.o"
 "./Src/i2c.o"
 "./Src/main.o"
 "./Src/syscalls.o"

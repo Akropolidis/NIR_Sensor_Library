@@ -117,7 +117,7 @@ void I2C1_byteRead(char saddr, char maddr, char* data) {
 	  while (!(I2C1->SR1 & SR1_TXE)){}
 
 	  /* Send register address */
-	  /* Aight, here is the location I writing to read from */
+	  /* Aight, here is the address of the register I'm want to write to read from*/
 	  I2C1->DR = maddr;
 
 	  /*Wait until transmitter empty */
@@ -146,7 +146,8 @@ void I2C1_byteRead(char saddr, char maddr, char* data) {
 	 /* Generate stop after data received */
 	 I2C1->CR1 |= CR1_STOP;
 
-	 /* Wait until RXNE flag is set */
+	 /* Wait until RXNE flag is set
+	  * Wait until receiver is not empty (has contents to read)*/
 	 while (!(I2C1->SR1 & SR1_RXNE)){}
 
 	 /* Read data from DR */
@@ -259,7 +260,7 @@ void I2C1_burstWrite(char saddr, char maddr, int n, char* data) {
 	I2C1->DR = saddr << 1; // shifting the address left makes room for the R/W bit, which is 0 for write
 
 	/* Wait until address flag is set */
-	/* Each slave device compares the address from master to its own adress and sends an ACK if mathced*/
+	/* Each slave device compares the address from master to its own address and sends an ACK if mathced*/
 	/* I'm device A and of course you can write to one of my registers */
 	while (!(I2C1->SR1 & (SR1_ADDR))){}
 
