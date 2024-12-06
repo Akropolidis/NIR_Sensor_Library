@@ -23,6 +23,7 @@ extern "C" {
 /*Configuration Registers */
 #define CFG_MISC							0x38
 #define CFG_LED_MULT						0x39
+#define LTF_CCOUNT							0x3A
 #define TEMP_COMPDAC						0x3C
 #define LED_WAIT							0x3D
 #define CFG_PINMAP							0x3E
@@ -225,7 +226,7 @@ uint8_t getAnalogSatMod_8_15(); //Status 3
 //Status 6
 bool tempSaturated(); //Analog saturation of temperature
 bool measurementReady(); //Measurement is finished. New measurement can be started
-bool mesurementActive(); //Measurement is active. New measurement cannot be started
+bool measurementActive(); //Measurement is active. New measurement cannot be started
 
 // Status 7 register settings
 /* Bit[7:6] = I2C_DATA_PTR
@@ -261,9 +262,10 @@ void configureLEDAuto(bool mode); //Controls NIR light source during spectral me
 void configureAutozero(bool enable, uint8_t az_waitTime, uint8_t iteration, uint8_t cycle);
 
 /* Measurement control, mode */
-void setIntegrationTime(uint8_t intTime); //Register 0x61, 0x62 and 0x63 program the integration time of the LTF converter
+void setIntegrationTime(uint32_t intTime); //Register 0x61, 0x62 and 0x63 program the integration time of the LTF converter
 void configureWaitCycle(bool setting); //Enable the waiting time between integration cycle A to D (programmable with LTF_WTIME)
-void setWaitTime(uint8_t waitTime); //Time in between consecutive measurements using LTF_WTIME
+void setWaitTime(uint32_t waitTime); //Time in between consecutive measurements using LTF_WTIME
+void setLTF_CCOUNT(uint16_t ccount_value);
 void setIntegrationMode(uint8_t mode); //16 channels (A), 32 channels (AB), 48 channels (ABC), 64 channels (ABCD)
 bool measurementReady();
 

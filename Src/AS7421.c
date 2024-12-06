@@ -5,7 +5,8 @@ uint8_t config_values[8] = {0x21, 0x21, 0x21, 0x21, 0x43, 0x43, 0x43, 0x43};
 static uint8_t AS7421_readRegister(uint8_t addr);
 static void AS7421_readRegisters(uint8_t addr, uint8_t bufferSize, uint8_t *data);
 static void AS7421_writeRegister(uint8_t addr, uint8_t val);
-static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, char *val);
+static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, uint8_t *val);
+static uint16_t byteSwap16(uint16_t value);
 
 //Reads from a given location from the AS7421
 static uint8_t AS7421_readRegister(uint8_t addr)
@@ -18,7 +19,7 @@ static uint8_t AS7421_readRegister(uint8_t addr)
 //Reads from consecutive register locations on the AS7421
 static void AS7421_readRegisters(uint8_t addr, uint8_t bufferSize, uint8_t *data)
 {
-	I2C1_burstRead(AS7421_ADDR, addr, bufferSize, data);
+	I2C1_burstRead(AS7421_ADDR, addr, bufferSize, (char *)data);
 }
 
 //Write a value to a given location on the AS7421
@@ -32,7 +33,7 @@ static void AS7421_writeRegister(uint8_t addr, uint8_t val)
 }
 
 //Write values to consecutive register locations on the AS7421
-static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, char *val)
+static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, uint8_t *val)
 {
 //	char data[bufferSize];
 //
@@ -40,9 +41,12 @@ static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, char *v
 //	{
 //		data[i] = val[i];
 //	}
-	I2C1_burstWrite(AS7421_ADDR, startAddr, bufferSize, val);
+	I2C1_burstWrite(AS7421_ADDR, startAddr, bufferSize, (char *)val);
 }
 
+static uint16_t byteSwap16(uint16_t value) {
+    return (value >> 8) | (value << 8);
+}
 // Enable FPU
 void fpu_enable()
 {
@@ -111,9 +115,11 @@ bool initialize()
 	}
 
 	//Add initialization functions
-	configueLEDWait(false);
-	setInterLED(2);
+	configueLEDWait(false); //False is to enable LED wait time between cycles
 	configureWaitCycle(true);
+	setInterLED(2);
+	setLTF_CCOUNT(1023);
+
 	configureLEDAuto(false);
 	setWaitTime(10);
 	setIntegrationTime(20);
@@ -133,10 +139,11 @@ void startup()
 		setIntegrationTime(65.5);
 		setWaitTime(5);
 
+		sleep();
 		powerup();
 		configureSMUX();
 		configureGain(6); //Sets gain for all ADCs
-		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_50MA);
+		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_75MA);
 	}
 	else
 	{
@@ -149,7 +156,7 @@ void startup()
 void performMeasurements(uint16_t arrSpectra[CHANNELSIZE], uint16_t arrTemp[TEMPSIZE])
 {
 	startMeasurements(true);
-	while (mesurementActive())
+	while (measurementActive())
 	{
 		unsigned long startTime = getMillis();
 		while (getMeasurementStatus(ADATA) == 0){} //End of measurement, new measurement data can be read if true
@@ -207,16 +214,32 @@ void configureWaitCycle(bool setting)
 }
 
 //Programs the wait time (WTIME) in ms between two consecutive spectral measurements
-void setWaitTime(uint8_t waitTime)
+void setWaitTime(uint32_t waitTime)
 {
-	uint32_t waitCounts = ((waitTime/1000) * F_CLKMOD) - 1;
+	uint32_t waitCounts = ((waitTime * F_CLKMOD) / 1000) - 1;
 
-	char data[3] = {0};
+	uint8_t data[3] = {0};
 	data[0] = waitCounts & 0xFF; //low byte
 	data[1] = (waitCounts >> 8) & 0xFF; //mid byte
 	data[2] = (waitCounts >> 16) & 0xFF; //high byte
 
 	AS7421_writeRegisters(LTF_WTIME, 3, data);
+}
+
+void setLTF_CCOUNT(uint16_t ccount_value)
+{
+    // Validate the input value
+    if (ccount_value > 0xFFFF) {
+        ccount_value = 0xFFFF;  // Cap to maximum 16-bit value
+    }
+	uint8_t data[2] = {0};
+	ccount_value = byteSwap16(ccount_value);
+
+	data[0] = ccount_value & 0xFF; //low byte
+	data[1] = (ccount_value >> 8) & 0xFF; //high byte
+
+    // Write the value to the LTF_CCOUNT register
+    AS7421_writeRegisters(LTF_CCOUNT, 2, data);
 }
 
 //Controls NIR light source during spectral measurement
@@ -238,11 +261,11 @@ void configureLEDAuto(bool mode)
 }
 
 //Programs the integration time (ITIME) in ms of the LTF converter
-void setIntegrationTime(uint8_t intTime)
+void setIntegrationTime(uint32_t intTime)
 {
-	uint32_t intCounts = ((intTime/1000) * F_CLKMOD) - 1;
+	uint32_t intCounts = ((intTime * F_CLKMOD) / 1000) - 1;
 
-	char data[3] = {0};
+	uint8_t data[3] = {0};
 	data[0] = intCounts & 0xFF;
 	data[1] = (intCounts >> 8) & 0xFF;
 	data[2] = (intCounts >> 16) & 0xFF;
@@ -304,17 +327,17 @@ void configureAutozero(bool enable, uint8_t az_waitTime, uint8_t iteration, uint
     AS7421_writeRegister(CFG_AZ, value);
 }
 
-// Internal oscillator enabled, potentially write 0x44 to register 0x6F, 0x20 to register 0x6E, 0x00 to register 0x6F
+// Internal oscillator enabled, potentially write 0x44 to register 0x6F, 0x20 to register 0x6E, 0x00 to register 0x6F, sensor is in idle state
 void powerup()
 {
 	uint8_t value = AS7421_readRegister(ENABLE); //Read existing state
 	value |= (1U << 0); //Set PON (bit 0)
     AS7421_writeRegister(ENABLE, value);
 
-    //After power on reset the following commands have to be written prior accessing other registers
-    AS7421_writeRegister(0x6F, 0x44);
-    AS7421_writeRegister(0x6E, 0x20);
-    AS7421_writeRegister(0x6F, 0x00);
+//    //After power on reset the following commands have to be written prior accessing other registers
+//    AS7421_writeRegister(0x6F, 0x44);
+//    AS7421_writeRegister(0x6E, 0x20);
+//    AS7421_writeRegister(0x6F, 0x00);
 }
 
 // Reset
@@ -325,7 +348,7 @@ void reset()
 	AS7421_writeRegister(CFG_MISC, value);
 }
 
-// Internal oscillator disabled
+// Internal oscillator disabled, sensor is in sleep state
 void sleep()
 {
 	uint8_t value = AS7421_readRegister(ENABLE); //Read existing state
@@ -442,7 +465,7 @@ void configureSMUX()
 	setSMUX_D(config_values);
 }
 
-//2^x gain, i.e. gain of 5 = 2^5 = 128x
+//2^x gain, i.e. gain of 6 = 2^6 = 256x
 void configureGain(uint8_t gain)
 {
 	if (gain > 8)
@@ -529,7 +552,7 @@ void stopMeasurements()
 }
 
 //Measurement is active. New measurement cannot be started
-bool mesurementActive()
+bool measurementActive()
 {
 	uint8_t value = AS7421_readRegister(STATUS_6);
     bool status = (value & (1U << 4)) != 0; // Isolate bit 4 (LTF_BUSY) and check if it's set
