@@ -12,22 +12,14 @@ int main(void)
 
 
 	startup();
+	delayMillis(2000);
 	startMeasurements(true);
 	uint8_t count = 0;
-	uint32_t cycles = (20 * F_CLKMOD) - 1;
-	while (1)
+	while (measurementActive())
 	{
+		performMeasurements(channel_data, temp_data);
 
-		unsigned long startTime = getMillis();
-		while (getMeasurementStatus(ADATA) == 0){} //End of measurement, new measurement data can be read if true
-
-		unsigned long endTime = getMillis();
-		printf("Time to get data: %ld \n\r", endTime - startTime);
-
-		getAllSpectralData(channel_data); //Reading spectral data channels and passing organized values into arrSpectra
-		getAllTemperatureData(temp_data); //Reading temperatures of integration cycles A to D
-
-		printf("\nMeasurement %i: \n\r", count);
+		printf("Measurement %i: \n\r", count);
 		for (int i = 0; i < NUM_CHANNELS; i++)
 		{
 //			printf("Channel %i: %f\n\r", i+1, channel_data[i]);
@@ -35,11 +27,8 @@ int main(void)
 		}
 
 		count++;
-		if (count < 5)
-		{
-			startMeasurements(true);
-		}
-		else
+		// If in continuous mode, specify number of measurements before exiting loop
+		if (count == 200)
 		{
 			break;
 		}

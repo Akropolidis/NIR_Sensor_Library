@@ -47,6 +47,7 @@ static void AS7421_writeRegisters(uint8_t startAddr, uint8_t bufferSize, uint8_t
 static uint16_t byteSwap16(uint16_t value) {
     return (value >> 8) | (value << 8);
 }
+
 // Enable FPU
 void fpu_enable()
 {
@@ -143,7 +144,7 @@ void startup()
 		powerup();
 		configureSMUX();
 		configureGain(6); //Sets gain for all ADCs
-		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_75MA);
+		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_50MA);
 	}
 	else
 	{
@@ -155,19 +156,14 @@ void startup()
 // Perform Measurements
 void performMeasurements(uint16_t arrSpectra[CHANNELSIZE], uint16_t arrTemp[TEMPSIZE])
 {
-	startMeasurements(true);
-	while (measurementActive())
-	{
-		unsigned long startTime = getMillis();
-		while (getMeasurementStatus(ADATA) == 0){} //End of measurement, new measurement data can be read if true
+	unsigned long startTime = getMillis();
+	while (getMeasurementStatus(ADATA) == 0){} //End of measurement, new measurement data can be read if true
 
-		unsigned long endTime = getMillis();
-		printf("TIme to get data: %ld \n\r", endTime - startTime);
+	unsigned long endTime = getMillis();
+	printf("\nTIme to get data: %ld \n\r", endTime - startTime);
 
-		getAllSpectralData(arrSpectra); //Reading spectral data channels and passing organized values into arrSpectra
-		getAllTemperatureData(arrTemp); //Reading temperatures of integration cycles A to D
-	}
-	stopMeasurements();
+	getAllSpectralData(arrSpectra); //Reading spectral data channels and passing organized values into arrSpectra
+	getAllTemperatureData(arrTemp); //Reading temperatures of integration cycles A to D
 }
 
 //Configure LED_WAIT_OFF or Disable LED_WAIT_OFF to modify waiting time between integration cycle A to D
@@ -263,6 +259,10 @@ void configureLEDAuto(bool mode)
 //Programs the integration time (ITIME) in ms of the LTF converter
 void setIntegrationTime(uint32_t intTime)
 {
+//	if (intTime > 256)
+//	{
+//		intTime = 256;
+//	}
 	uint32_t intCounts = ((intTime * F_CLKMOD) / 1000) - 1;
 
 	uint8_t data[3] = {0};
@@ -334,10 +334,10 @@ void powerup()
 	value |= (1U << 0); //Set PON (bit 0)
     AS7421_writeRegister(ENABLE, value);
 
-//    //After power on reset the following commands have to be written prior accessing other registers
-//    AS7421_writeRegister(0x6F, 0x44);
-//    AS7421_writeRegister(0x6E, 0x20);
-//    AS7421_writeRegister(0x6F, 0x00);
+    //After power on reset the following commands have to be written prior accessing other registers
+    AS7421_writeRegister(0x6F, 0x44);
+    AS7421_writeRegister(0x6E, 0x20);
+    AS7421_writeRegister(0x6F, 0x00);
 }
 
 // Reset
@@ -952,7 +952,85 @@ void getAllSpectralData(uint16_t arr[CHANNELSIZE])
 	arr[63] = getChannel15();
 }
 
-
+//void getAllSpectralData(float arr[CHANNELSIZE])
+//{
+//	//Ordered PDs
+//	/* Integration Cycle A */
+//	arr[0] = getChannel1() / 406;
+//	arr[1] = getChannel48() / 431;
+//	arr[2] = getChannel2() / 409;
+//	arr[3] = getChannel34() / 296;
+//	arr[4] = getChannel16() / 190;
+//	arr[5] = getChannel32() / 112;
+//	arr[6] = getChannel18() / 105;
+//	arr[7] = getChannel51() / 385;
+//
+//	arr[8] = getChannel4() / 394;
+//	arr[9] = getChannel49() / 422;
+//	arr[10] = getChannel3() / 385;
+//	arr[11] = getChannel35() / 344;
+//	arr[12] = getChannel17() / 235;
+//	arr[13] = getChannel33() / 151;
+//	arr[14] = getChannel19() / 148;
+//	arr[15] = getChannel54() / 61;
+//
+//	/* Integration Cycle B */
+//	arr[16] = getChannel0() / 398;
+//	arr[17] = getChannel13() / 416;
+//	arr[18] = getChannel50() / 390;
+//	arr[19] = getChannel63() / 367;
+//	arr[20] = getChannel52() / 253;
+//	arr[21] = getChannel6() / 166;
+//	arr[22] = getChannel38() / 180;
+//	arr[23] = getChannel20() / 74;
+//
+//	arr[24] = getChannel36() / 398;
+//	arr[25] = getChannel22() / 411;
+//	arr[26] = getChannel55() / 405;
+//	arr[27] = getChannel5() / 363;
+//	arr[28] = getChannel53() / 286;
+//	arr[29] = getChannel7() / 189;
+//	arr[30] = getChannel39() / 206;
+//	arr[31] = getChannel21() / 92;
+//
+//	/* Integration Cycle C */
+//	arr[32] = getChannel37() / 401;
+//	arr[33] = getChannel23() / 430;
+//	arr[34] = getChannel40() / 401;
+//	arr[35] = getChannel26() / 370;
+//	arr[36] = getChannel42() / 304;
+//	arr[37] = getChannel24() / 209;
+//	arr[38] = getChannel56() / 225;
+//	arr[39] = getChannel10() / 104;
+//
+//	arr[40] = getChannel58() / 397;
+//	arr[41] = getChannel8() / 418;
+//	arr[42] = getChannel41() / 371;
+//	arr[43] = getChannel27() / 354;
+//	arr[44] = getChannel43() / 269;
+//	arr[45] = getChannel25() / 177;
+//	arr[46] = getChannel57() / 203;
+//	arr[47] = getChannel11() / 90;
+//
+//	/* Integration Cycle D */
+//	arr[48] = getChannel59() / 375;
+//	arr[49] = getChannel9() / 401;
+//	arr[50] = getChannel44() / 387;
+//	arr[51] = getChannel30() / 320;
+//	arr[52] = getChannel46() / 239;
+//	arr[53] = getChannel28() / 163;
+//	arr[54] = getChannel60() / 169;
+//	arr[55] = getChannel14() / 74;
+//
+//	arr[56] = getChannel62() / 403;
+//	arr[57] = getChannel12() / 413;
+//	arr[58] = getChannel45() / 327;
+//	arr[59] = getChannel31() / 214;
+//	arr[60] = getChannel47() / 214;
+//	arr[61] = getChannel29() / 143;
+//	arr[62] = getChannel61() / 134;
+//	arr[63] = getChannel15() / 426;
+//}
 
 
 // Helper function to record temperature data
