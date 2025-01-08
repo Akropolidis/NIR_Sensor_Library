@@ -160,7 +160,7 @@ void performMeasurements(uint16_t arrSpectra[CHANNELSIZE], uint16_t arrTemp[TEMP
 	while (getMeasurementStatus(ADATA) == 0){} //End of measurement, new measurement data can be read if true
 
 	unsigned long endTime = getMillis();
-	printf("\nTIme to get data: %ld \n\r", endTime - startTime);
+//	printf("\nTIme to get data: %ld \n\r", endTime - startTime);
 
 	getAllSpectralData(arrSpectra); //Reading spectral data channels and passing organized values into arrSpectra
 	getAllTemperatureData(arrTemp); //Reading temperatures of integration cycles A to D
@@ -951,6 +951,86 @@ void getAllSpectralData(uint16_t arr[CHANNELSIZE])
 	arr[62] = getChannel61();
 	arr[63] = getChannel15();
 }
+
+//void getAllSpectralData(uint16_t arr[CHANNELSIZE])
+//{
+//	//Ordered PDs
+//	/* Integration Cycle A */
+//	arr[0] = getChannel1() / 431;
+//	arr[1] = getChannel48() / 375;
+//	arr[2] = getChannel2() / 409;
+//	arr[3] = getChannel34() / 401;
+//	arr[4] = getChannel16() / 398;
+//	arr[5] = getChannel32() / 401;
+//	arr[6] = getChannel18() / 390;
+//	arr[7] = getChannel51() / 320;
+//
+//	arr[8] = getChannel4() / 190;
+//	arr[9] = getChannel49() / 401;
+//	arr[10] = getChannel3() / 296;
+//	arr[11] = getChannel35() / 370;
+//	arr[12] = getChannel17() / 416;
+//	arr[13] = getChannel33() / 430;
+//	arr[14] = getChannel19() / 367;
+//	arr[15] = getChannel54() / 169;
+//
+//	/* Integration Cycle B */
+//	arr[16] = getChannel0() / 406;
+//	arr[17] = getChannel13() / 151;
+//	arr[18] = getChannel50() / 387;
+//	arr[19] = getChannel63() / 426;
+//	arr[20] = getChannel52() / 239;
+//	arr[21] = getChannel6() / 105;
+//	arr[22] = getChannel38() / 225;
+//	arr[23] = getChannel20() / 253;
+//
+//	arr[24] = getChannel36() / 304;
+//	arr[25] = getChannel22() / 180;
+//	arr[26] = getChannel55() / 74;
+//	arr[27] = getChannel5() / 112;
+//	arr[28] = getChannel53() / 163;
+//	arr[29] = getChannel7() / 385;
+//	arr[30] = getChannel39() / 104;
+//	arr[31] = getChannel21() / 166;
+//
+//	/* Integration Cycle C */
+//	arr[32] = getChannel37() / 209;
+//	arr[33] = getChannel23() / 74;
+//	arr[34] = getChannel40() / 397;
+//	arr[35] = getChannel26() / 405;
+//	arr[36] = getChannel42() / 371;
+//	arr[37] = getChannel24() / 398;
+//	arr[38] = getChannel56() / 403;
+//	arr[39] = getChannel10() / 385;
+//
+//	arr[40] = getChannel58() / 327;
+//	arr[41] = getChannel8() / 394;
+//	arr[42] = getChannel41() / 418;
+//	arr[43] = getChannel27() / 363;
+//	arr[44] = getChannel43() / 354;
+//	arr[45] = getChannel25() / 411;
+//	arr[46] = getChannel57() / 413;
+//	arr[47] = getChannel11() / 344;
+//
+//	/* Integration Cycle D */
+//	arr[48] = getChannel59() / 214;
+//	arr[49] = getChannel9() / 422;
+//	arr[50] = getChannel44() / 269;
+//	arr[51] = getChannel30() / 206;
+//	arr[52] = getChannel46() / 203;
+//	arr[53] = getChannel28() / 286;
+//	arr[54] = getChannel60() / 214;
+//	arr[55] = getChannel14() / 148;
+//
+//	arr[56] = getChannel62() / 134;
+//	arr[57] = getChannel12() / 235;
+//	arr[58] = getChannel45() / 177;
+//	arr[59] = getChannel31() / 92;
+//	arr[60] = getChannel47() / 90;
+//	arr[61] = getChannel29() / 189;
+//	arr[62] = getChannel61() / 143;
+//	arr[63] = getChannel15() / 61;
+//}
 
 //void getAllSpectralData(float arr[CHANNELSIZE])
 //{

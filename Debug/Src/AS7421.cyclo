@@ -102,9 +102,9 @@
 ../Src/AS7421.c:866:10:getChannel61	1
 ../Src/AS7421.c:870:10:getChannel15	1
 ../Src/AS7421.c:876:6:getAllSpectralData	1
-../Src/AS7421.c:1037:10:recordTemperatures	1
-../Src/AS7421.c:1046:10:getTemp_IntA	1
-../Src/AS7421.c:1050:10:getTemp_IntB	1
-../Src/AS7421.c:1054:10:getTemp_IntC	1
-../Src/AS7421.c:1058:10:getTemp_IntD	1
-../Src/AS7421.c:1063:6:getAllTemperatureData	1
+../Src/AS7421.c:1117:10:recordTemperatures	1
+../Src/AS7421.c:1126:10:getTemp_IntA	1
+../Src/AS7421.c:1130:10:getTemp_IntB	1
+../Src/AS7421.c:1134:10:getTemp_IntC	1
+../Src/AS7421.c:1138:10:getTemp_IntD	1
+../Src/AS7421.c:1143:6:getAllTemperatureData	1
