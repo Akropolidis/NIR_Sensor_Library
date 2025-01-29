@@ -4270,126 +4270,126 @@ void I2C1_Init(void)
  8001fc6:	f043 0302 	orr.w	r3, r3, #2
  8001fca:	6313      	str	r3, [r2, #48]	; 0x30
 
-	/*Set PB6 and PB7 mode to alternate function*/
-	GPIOB->MODER &= ~(1U<<12);
+	/*Set PB8 and PB9 mode to alternate function*/
+	GPIOB->MODER &= ~(1U<<16);
  8001fcc:	4b4b      	ldr	r3, [pc, #300]	; (80020fc <I2C1_Init+0x140>)
  8001fce:	681b      	ldr	r3, [r3, #0]
  8001fd0:	4a4a      	ldr	r2, [pc, #296]	; (80020fc <I2C1_Init+0x140>)
- 8001fd2:	f423 5380 	bic.w	r3, r3, #4096	; 0x1000
+ 8001fd2:	f423 3380 	bic.w	r3, r3, #65536	; 0x10000
  8001fd6:	6013      	str	r3, [r2, #0]
-	GPIOB->MODER |= (1U<<13);
+	GPIOB->MODER |= (1U<<17);
  8001fd8:	4b48      	ldr	r3, [pc, #288]	; (80020fc <I2C1_Init+0x140>)
  8001fda:	681b      	ldr	r3, [r3, #0]
  8001fdc:	4a47      	ldr	r2, [pc, #284]	; (80020fc <I2C1_Init+0x140>)
- 8001fde:	f443 5300 	orr.w	r3, r3, #8192	; 0x2000
+ 8001fde:	f443 3300 	orr.w	r3, r3, #131072	; 0x20000
  8001fe2:	6013      	str	r3, [r2, #0]
 
-	GPIOB->MODER &= ~(1U<<14);
+	GPIOB->MODER &= ~(1U<<18);
  8001fe4:	4b45      	ldr	r3, [pc, #276]	; (80020fc <I2C1_Init+0x140>)
  8001fe6:	681b      	ldr	r3, [r3, #0]
  8001fe8:	4a44      	ldr	r2, [pc, #272]	; (80020fc <I2C1_Init+0x140>)
- 8001fea:	f423 4380 	bic.w	r3, r3, #16384	; 0x4000
+ 8001fea:	f423 2380 	bic.w	r3, r3, #262144	; 0x40000
  8001fee:	6013      	str	r3, [r2, #0]
-	GPIOB->MODER |= (1U<<15);
+	GPIOB->MODER |= (1U<<19);
  8001ff0:	4b42      	ldr	r3, [pc, #264]	; (80020fc <I2C1_Init+0x140>)
  8001ff2:	681b      	ldr	r3, [r3, #0]
  8001ff4:	4a41      	ldr	r2, [pc, #260]	; (80020fc <I2C1_Init+0x140>)
- 8001ff6:	f443 4300 	orr.w	r3, r3, #32768	; 0x8000
+ 8001ff6:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
  8001ffa:	6013      	str	r3, [r2, #0]
 
-	/*Set PB6 and PB7 output type to  open drain*/
-	GPIOB->OTYPER |= (1U<<6);
+	/*Set PB8 and PB9 output type to open drain*/
+	GPIOB->OTYPER |= (1U<<8);
  8001ffc:	4b3f      	ldr	r3, [pc, #252]	; (80020fc <I2C1_Init+0x140>)
  8001ffe:	685b      	ldr	r3, [r3, #4]
  8002000:	4a3e      	ldr	r2, [pc, #248]	; (80020fc <I2C1_Init+0x140>)
- 8002002:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+ 8002002:	f443 7380 	orr.w	r3, r3, #256	; 0x100
  8002006:	6053      	str	r3, [r2, #4]
-	GPIOB->OTYPER |= (1U<<7);
+	GPIOB->OTYPER |= (1U<<9);
  8002008:	4b3c      	ldr	r3, [pc, #240]	; (80020fc <I2C1_Init+0x140>)
  800200a:	685b      	ldr	r3, [r3, #4]
  800200c:	4a3b      	ldr	r2, [pc, #236]	; (80020fc <I2C1_Init+0x140>)
- 800200e:	f043 0380 	orr.w	r3, r3, #128	; 0x80
+ 800200e:	f443 7300 	orr.w	r3, r3, #512	; 0x200
  8002012:	6053      	str	r3, [r2, #4]
 
 	/*Enable Pull-up for PB6 and PB7*/
-	GPIOB->PUPDR |= (1U<<12);
+	GPIOB->PUPDR |= (1U<<16);
  8002014:	4b39      	ldr	r3, [pc, #228]	; (80020fc <I2C1_Init+0x140>)
  8002016:	68db      	ldr	r3, [r3, #12]
  8002018:	4a38      	ldr	r2, [pc, #224]	; (80020fc <I2C1_Init+0x140>)
- 800201a:	f443 5380 	orr.w	r3, r3, #4096	; 0x1000
+ 800201a:	f443 3380 	orr.w	r3, r3, #65536	; 0x10000
  800201e:	60d3      	str	r3, [r2, #12]
-	GPIOB->PUPDR &= ~(1U<<13);
+	GPIOB->PUPDR &= ~(1U<<17);
  8002020:	4b36      	ldr	r3, [pc, #216]	; (80020fc <I2C1_Init+0x140>)
  8002022:	68db      	ldr	r3, [r3, #12]
  8002024:	4a35      	ldr	r2, [pc, #212]	; (80020fc <I2C1_Init+0x140>)
- 8002026:	f423 5300 	bic.w	r3, r3, #8192	; 0x2000
+ 8002026:	f423 3300 	bic.w	r3, r3, #131072	; 0x20000
  800202a:	60d3      	str	r3, [r2, #12]
 
-	GPIOB->PUPDR |= (1U<<14);
+	GPIOB->PUPDR |= (1U<<18);
  800202c:	4b33      	ldr	r3, [pc, #204]	; (80020fc <I2C1_Init+0x140>)
  800202e:	68db      	ldr	r3, [r3, #12]
  8002030:	4a32      	ldr	r2, [pc, #200]	; (80020fc <I2C1_Init+0x140>)
- 8002032:	f443 4380 	orr.w	r3, r3, #16384	; 0x4000
+ 8002032:	f443 2380 	orr.w	r3, r3, #262144	; 0x40000
  8002036:	60d3      	str	r3, [r2, #12]
-	GPIOB->PUPDR &= ~(1U<<15);
+	GPIOB->PUPDR &= ~(1U<<19);
  8002038:	4b30      	ldr	r3, [pc, #192]	; (80020fc <I2C1_Init+0x140>)
  800203a:	68db      	ldr	r3, [r3, #12]
  800203c:	4a2f      	ldr	r2, [pc, #188]	; (80020fc <I2C1_Init+0x140>)
- 800203e:	f423 4300 	bic.w	r3, r3, #32768	; 0x8000
+ 800203e:	f423 2300 	bic.w	r3, r3, #524288	; 0x80000
  8002042:	60d3      	str	r3, [r2, #12]
 
-	/*Set PB6 and PB7 alternate function type to I2C (AF4)
-	 * PB6 --> SCL
-	 * PB7 --> SDA*/
-	GPIOB->AFR[0] &= ~(1U<<24);
+	/*Set PB8 and PB9 alternate function type to I2C (AF4)
+	 * PB8 --> SCL
+	 * PB9 --> SDA*/
+	GPIOB->AFR[1] &= ~(1U<<0);
  8002044:	4b2d      	ldr	r3, [pc, #180]	; (80020fc <I2C1_Init+0x140>)
- 8002046:	6a1b      	ldr	r3, [r3, #32]
+ 8002046:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002048:	4a2c      	ldr	r2, [pc, #176]	; (80020fc <I2C1_Init+0x140>)
- 800204a:	f023 7380 	bic.w	r3, r3, #16777216	; 0x1000000
- 800204e:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] &= ~(1U<<25);
+ 800204a:	f023 0301 	bic.w	r3, r3, #1
+ 800204e:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] &= ~(1U<<1);
  8002050:	4b2a      	ldr	r3, [pc, #168]	; (80020fc <I2C1_Init+0x140>)
- 8002052:	6a1b      	ldr	r3, [r3, #32]
+ 8002052:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002054:	4a29      	ldr	r2, [pc, #164]	; (80020fc <I2C1_Init+0x140>)
- 8002056:	f023 7300 	bic.w	r3, r3, #33554432	; 0x2000000
- 800205a:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] |= (1U<<26);
+ 8002056:	f023 0302 	bic.w	r3, r3, #2
+ 800205a:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] |= (1U<<2);
  800205c:	4b27      	ldr	r3, [pc, #156]	; (80020fc <I2C1_Init+0x140>)
- 800205e:	6a1b      	ldr	r3, [r3, #32]
+ 800205e:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002060:	4a26      	ldr	r2, [pc, #152]	; (80020fc <I2C1_Init+0x140>)
- 8002062:	f043 6380 	orr.w	r3, r3, #67108864	; 0x4000000
- 8002066:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] &= ~(1U<<27);
+ 8002062:	f043 0304 	orr.w	r3, r3, #4
+ 8002066:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] &= ~(1U<<3);
  8002068:	4b24      	ldr	r3, [pc, #144]	; (80020fc <I2C1_Init+0x140>)
- 800206a:	6a1b      	ldr	r3, [r3, #32]
+ 800206a:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  800206c:	4a23      	ldr	r2, [pc, #140]	; (80020fc <I2C1_Init+0x140>)
- 800206e:	f023 6300 	bic.w	r3, r3, #134217728	; 0x8000000
- 8002072:	6213      	str	r3, [r2, #32]
+ 800206e:	f023 0308 	bic.w	r3, r3, #8
+ 8002072:	6253      	str	r3, [r2, #36]	; 0x24
 
-	GPIOB->AFR[0] &= ~(1U<<28);
+	GPIOB->AFR[1] &= ~(1U<<4);
  8002074:	4b21      	ldr	r3, [pc, #132]	; (80020fc <I2C1_Init+0x140>)
- 8002076:	6a1b      	ldr	r3, [r3, #32]
+ 8002076:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002078:	4a20      	ldr	r2, [pc, #128]	; (80020fc <I2C1_Init+0x140>)
- 800207a:	f023 5380 	bic.w	r3, r3, #268435456	; 0x10000000
- 800207e:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] &= ~(1U<<29);
+ 800207a:	f023 0310 	bic.w	r3, r3, #16
+ 800207e:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] &= ~(1U<<5);
  8002080:	4b1e      	ldr	r3, [pc, #120]	; (80020fc <I2C1_Init+0x140>)
- 8002082:	6a1b      	ldr	r3, [r3, #32]
+ 8002082:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002084:	4a1d      	ldr	r2, [pc, #116]	; (80020fc <I2C1_Init+0x140>)
- 8002086:	f023 5300 	bic.w	r3, r3, #536870912	; 0x20000000
- 800208a:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] |= (1U<<30);
+ 8002086:	f023 0320 	bic.w	r3, r3, #32
+ 800208a:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] |= (1U<<6);
  800208c:	4b1b      	ldr	r3, [pc, #108]	; (80020fc <I2C1_Init+0x140>)
- 800208e:	6a1b      	ldr	r3, [r3, #32]
+ 800208e:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  8002090:	4a1a      	ldr	r2, [pc, #104]	; (80020fc <I2C1_Init+0x140>)
- 8002092:	f043 4380 	orr.w	r3, r3, #1073741824	; 0x40000000
- 8002096:	6213      	str	r3, [r2, #32]
-	GPIOB->AFR[0] &= ~(1U<<31);
+ 8002092:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+ 8002096:	6253      	str	r3, [r2, #36]	; 0x24
+	GPIOB->AFR[1] &= ~(1U<<7);
  8002098:	4b18      	ldr	r3, [pc, #96]	; (80020fc <I2C1_Init+0x140>)
- 800209a:	6a1b      	ldr	r3, [r3, #32]
+ 800209a:	6a5b      	ldr	r3, [r3, #36]	; 0x24
  800209c:	4a17      	ldr	r2, [pc, #92]	; (80020fc <I2C1_Init+0x140>)
- 800209e:	f023 4300 	bic.w	r3, r3, #2147483648	; 0x80000000
- 80020a2:	6213      	str	r3, [r2, #32]
+ 800209e:	f023 0380 	bic.w	r3, r3, #128	; 0x80
+ 80020a2:	6253      	str	r3, [r2, #36]	; 0x24
 
 	/***Configuring I2C1***/
 

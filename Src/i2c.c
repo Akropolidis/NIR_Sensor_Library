@@ -24,36 +24,36 @@ void I2C1_Init(void)
 	/*Enable clock access to GPIOB*/
 	RCC->AHB1ENR |= GPIOBEN;
 
-	/*Set PB6 and PB7 mode to alternate function*/
-	GPIOB->MODER &= ~(1U<<12);
-	GPIOB->MODER |= (1U<<13);
+	/*Set PB8 and PB9 mode to alternate function*/
+	GPIOB->MODER &= ~(1U<<16);
+	GPIOB->MODER |= (1U<<17);
 
-	GPIOB->MODER &= ~(1U<<14);
-	GPIOB->MODER |= (1U<<15);
+	GPIOB->MODER &= ~(1U<<18);
+	GPIOB->MODER |= (1U<<19);
 
-	/*Set PB6 and PB7 output type to  open drain*/
-	GPIOB->OTYPER |= (1U<<6);
-	GPIOB->OTYPER |= (1U<<7);
+	/*Set PB8 and PB9 output type to open drain*/
+	GPIOB->OTYPER |= (1U<<8);
+	GPIOB->OTYPER |= (1U<<9);
 
 	/*Enable Pull-up for PB6 and PB7*/
-	GPIOB->PUPDR |= (1U<<12);
-	GPIOB->PUPDR &= ~(1U<<13);
+	GPIOB->PUPDR |= (1U<<16);
+	GPIOB->PUPDR &= ~(1U<<17);
 
-	GPIOB->PUPDR |= (1U<<14);
-	GPIOB->PUPDR &= ~(1U<<15);
+	GPIOB->PUPDR |= (1U<<18);
+	GPIOB->PUPDR &= ~(1U<<19);
 
-	/*Set PB6 and PB7 alternate function type to I2C (AF4)
-	 * PB6 --> SCL
-	 * PB7 --> SDA*/
-	GPIOB->AFR[0] &= ~(1U<<24);
-	GPIOB->AFR[0] &= ~(1U<<25);
-	GPIOB->AFR[0] |= (1U<<26);
-	GPIOB->AFR[0] &= ~(1U<<27);
+	/*Set PB8 and PB9 alternate function type to I2C (AF4)
+	 * PB8 --> SCL
+	 * PB9 --> SDA*/
+	GPIOB->AFR[1] &= ~(1U<<0);
+	GPIOB->AFR[1] &= ~(1U<<1);
+	GPIOB->AFR[1] |= (1U<<2);
+	GPIOB->AFR[1] &= ~(1U<<3);
 
-	GPIOB->AFR[0] &= ~(1U<<28);
-	GPIOB->AFR[0] &= ~(1U<<29);
-	GPIOB->AFR[0] |= (1U<<30);
-	GPIOB->AFR[0] &= ~(1U<<31);
+	GPIOB->AFR[1] &= ~(1U<<4);
+	GPIOB->AFR[1] &= ~(1U<<5);
+	GPIOB->AFR[1] |= (1U<<6);
+	GPIOB->AFR[1] &= ~(1U<<7);
 
 	/***Configuring I2C1***/
 
