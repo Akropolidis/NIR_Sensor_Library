@@ -137,14 +137,14 @@ void startup()
 	bool works = initialize();
 	if (works)
 	{
-		setIntegrationTime(65.5);
+		setIntegrationTime(65.5); //65.5
 		setWaitTime(5);
 
 		sleep();
 		powerup();
 		configureSMUX();
-		configureGain(6); //Sets gain for all ADCs
-		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_50MA);
+		configureGain(8); //Sets gain for all ADCs // 8 max
+		configureLEDs(true, ALL_LEDS, LED_CURRENT_LIMIT_75MA); //75 max
 	}
 	else
 	{
