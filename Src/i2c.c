@@ -24,36 +24,36 @@ void I2C1_Init(void)
 	/*Enable clock access to GPIOB*/
 	RCC->AHB1ENR |= GPIOBEN;
 
-	/*Set PB6 and PB7 mode to alternate function*/
-	GPIOB->MODER &= ~(1U<<12);
-	GPIOB->MODER |= (1U<<13);
+	/*Set PB8 and PB9 mode to alternate function*/
+	GPIOB->MODER &= ~(1U<<16);
+	GPIOB->MODER |= (1U<<17);
 
-	GPIOB->MODER &= ~(1U<<14);
-	GPIOB->MODER |= (1U<<15);
+	GPIOB->MODER &= ~(1U<<18);
+	GPIOB->MODER |= (1U<<19);
 
-	/*Set PB6 and PB7 output type to  open drain*/
-	GPIOB->OTYPER |= (1U<<6);
-	GPIOB->OTYPER |= (1U<<7);
+	/*Set PB8 and PB9 output type to open drain*/
+	GPIOB->OTYPER |= (1U<<8);
+	GPIOB->OTYPER |= (1U<<9);
 
 	/*Enable Pull-up for PB6 and PB7*/
-	GPIOB->PUPDR |= (1U<<12);
-	GPIOB->PUPDR &= ~(1U<<13);
+	GPIOB->PUPDR |= (1U<<16);
+	GPIOB->PUPDR &= ~(1U<<17);
 
-	GPIOB->PUPDR |= (1U<<14);
-	GPIOB->PUPDR &= ~(1U<<15);
+	GPIOB->PUPDR |= (1U<<18);
+	GPIOB->PUPDR &= ~(1U<<19);
 
-	/*Set PB6 and PB7 alternate function type to I2C (AF4)
-	 * PB6 --> SCL
-	 * PB7 --> SDA*/
-	GPIOB->AFR[0] &= ~(1U<<24);
-	GPIOB->AFR[0] &= ~(1U<<25);
-	GPIOB->AFR[0] |= (1U<<26);
-	GPIOB->AFR[0] &= ~(1U<<27);
+	/*Set PB8 and PB9 alternate function type to I2C (AF4)
+	 * PB8 --> SCL
+	 * PB9 --> SDA*/
+	GPIOB->AFR[1] &= ~(1U<<0);
+	GPIOB->AFR[1] &= ~(1U<<1);
+	GPIOB->AFR[1] |= (1U<<2);
+	GPIOB->AFR[1] &= ~(1U<<3);
 
-	GPIOB->AFR[0] &= ~(1U<<28);
-	GPIOB->AFR[0] &= ~(1U<<29);
-	GPIOB->AFR[0] |= (1U<<30);
-	GPIOB->AFR[0] &= ~(1U<<31);
+	GPIOB->AFR[1] &= ~(1U<<4);
+	GPIOB->AFR[1] &= ~(1U<<5);
+	GPIOB->AFR[1] |= (1U<<6);
+	GPIOB->AFR[1] &= ~(1U<<7);
 
 	/***Configuring I2C1***/
 
@@ -117,7 +117,7 @@ void I2C1_byteRead(char saddr, char maddr, char* data) {
 	  while (!(I2C1->SR1 & SR1_TXE)){}
 
 	  /* Send register address */
-	  /* Aight, here is the location I writing to read from */
+	  /* Aight, here is the address of the register I'm want to write to read from*/
 	  I2C1->DR = maddr;
 
 	  /*Wait until transmitter empty */
@@ -146,7 +146,8 @@ void I2C1_byteRead(char saddr, char maddr, char* data) {
 	 /* Generate stop after data received */
 	 I2C1->CR1 |= CR1_STOP;
 
-	 /* Wait until RXNE flag is set */
+	 /* Wait until RXNE flag is set
+	  * Wait until receiver is not empty (has contents to read)*/
 	 while (!(I2C1->SR1 & SR1_RXNE)){}
 
 	 /* Read data from DR */
@@ -259,7 +260,7 @@ void I2C1_burstWrite(char saddr, char maddr, int n, char* data) {
 	I2C1->DR = saddr << 1; // shifting the address left makes room for the R/W bit, which is 0 for write
 
 	/* Wait until address flag is set */
-	/* Each slave device compares the address from master to its own adress and sends an ACK if mathced*/
+	/* Each slave device compares the address from master to its own address and sends an ACK if mathced*/
 	/* I'm device A and of course you can write to one of my registers */
 	while (!(I2C1->SR1 & (SR1_ADDR))){}
 
@@ -287,5 +288,3 @@ void I2C1_burstWrite(char saddr, char maddr, int n, char* data) {
 	/* Generate stop */
 	I2C1->CR1 |= CR1_STOP;
 }
-
-

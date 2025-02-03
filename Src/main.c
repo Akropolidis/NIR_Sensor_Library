@@ -1,63 +1,57 @@
 #include "stm32f4xx.h"
-#include "AS7265X.h"
+#include "AS7421.h"
+#include <inttypes.h>
+#include <limits.h>
+#include "mux.h"
 
 
-#define NUM_CHANNELS	18
-
+#define NUM_CHANNELS		64
 
 int main(void)
 {
+	I2C1_Init();
 
-	uint16_t channel_data[NUM_CHANNELS];
-	float channel_data_cal[NUM_CHANNELS];
+	/* Mux *
+	 * Note: calling enableChannel closes all the mux outputs before opening the specified channel
+	 * Switching between channels puts previously ON channel in idle mode (LED still on but not measuring)
+	 * Sensor state of previously ON channel resets to sleep mode with power on reset (i.e. power off then power on)*/
+	enableChannel(CHANNEL_0);
 
-	bool works = initialize();
+	/* Sensor */
+	// Containers to receive channel data
+	uint16_t channel_data[CHANNELSIZE];
+	uint16_t temp_data[CHANNELSIZE];
 
-	while(1)
+	startup();
+	delayMillis(2000);
+	startMeasurements(true);
+
+//	unsigned long start = getMillis();
+//	unsigned long duration = 120000; // aka 2mins
+	int count = 0;
+	while (measurementActive())
 	{
-		// Calibrated Channels
-		enableLED(AS7265x_LED_UV);
-		delayMillis(3000);
-		channel_data_cal[0] = getCalibratedA();
-		channel_data_cal[1] = getCalibratedB();
-		channel_data_cal[2] = getCalibratedC();
-		channel_data_cal[3] = getCalibratedD();
-		channel_data_cal[4] = getCalibratedE();
-		channel_data_cal[5] = getCalibratedF();
-		disableLED(AS7265x_LED_UV);
-		delayMillis(3000);
-
-		enableLED(AS7265x_LED_WHITE);
-		delayMillis(3000);
-		channel_data_cal[6] = getCalibratedG();
-		channel_data_cal[7] = getCalibratedH();
-		channel_data_cal[9] = getCalibratedI();
-		channel_data_cal[11] = getCalibratedJ();
-		channel_data_cal[16] = getCalibratedK();
-		channel_data_cal[17] = getCalibratedL();
-		disableLED(AS7265x_LED_WHITE);
-		delayMillis(3000);
-
-		enableLED(AS7265x_LED_IR);
-		delayMillis(3000);
-		channel_data_cal[8] = getCalibratedR();
-		channel_data_cal[10] = getCalibratedS();
-		channel_data_cal[12] = getCalibratedT();
-		channel_data_cal[13] = getCalibratedU();
-		channel_data_cal[14] = getCalibratedV();
-		channel_data_cal[15] = getCalibratedW();
-		disableLED(AS7265x_LED_IR);
-		delayMillis(3000);
-
-		printf("\nCalibrated Data Channels \n\r");
+		performMeasurements(channel_data, temp_data);
+		printf("%i\n\r", -1);
+		printf("%i\n\r", count);
 		for (int i = 0; i < NUM_CHANNELS; i++)
 		{
-//			printf("Channel %i: %f\n\r", i+1, channel_data_cal[i]);
-			printf("%f\n\r", channel_data_cal[i]);
+//			printf("Channel %i: %f\n\r", i+1, channel_data[i]);
+			printf("%d\n\r", channel_data[i]);
 		}
-
-		break;
-
+		count++;
+		if(count ==	INT_MAX){
+			count = 0;
+		}
+		//unsigned long end = getMillis();
+		// If in continuous mode, specify duration of test
+		//if (end - start > duration)
+		//{
+		//	break;
+		//}
 	}
+	stopMeasurements();
+	sleep();
+
 	return 0;
 }
