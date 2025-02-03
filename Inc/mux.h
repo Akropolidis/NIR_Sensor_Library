@@ -25,7 +25,7 @@ extern "C" {
 #define RESET								0x00
 
 
-//bool muxConnected();
+bool muxConnected();
 void selectMux_and_control(uint8_t mux_address, uint8_t control_byte);
 void enableChannel(uint8_t channel);
 void disableChannels();

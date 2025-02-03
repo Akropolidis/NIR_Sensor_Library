@@ -1,4 +1,4 @@
 ../Src/mux.c:5:6:muxConnected	24	static
 ../Src/mux.c:48:6:selectMux_and_control	56	dynamic
 ../Src/mux.c:58:6:enableChannel	16	static
-../Src/mux.c:64:6:disableChannels	8	static
+../Src/mux.c:65:6:disableChannels	8	static

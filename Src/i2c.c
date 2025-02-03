@@ -288,5 +288,3 @@ void I2C1_burstWrite(char saddr, char maddr, int n, char* data) {
 	/* Generate stop */
 	I2C1->CR1 |= CR1_STOP;
 }
-
-
