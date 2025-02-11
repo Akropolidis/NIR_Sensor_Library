@@ -48,7 +48,7 @@ def getSpectrum(ser):
     if ser is not None:
         ser.reset_input_buffer()
         while ser.in_waiting <= 0: 
-            pass
+            pass #stuck here
         while ser.readline().decode("utf-8").strip() != "-1":
             pass
         ser.readline()
