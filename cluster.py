@@ -7,11 +7,13 @@ from sklearn.preprocessing import normalize
 
 class Food(Enum):
     CASHEW=0,
-    ALMOND=1
+    ALMOND=1,
+    BREAD=2
 
 label_dict = {
     "cashew" : 0,
-    "almond" : 1
+    "almond" : 1,
+    "bread": 2
 }
 
 def main():
@@ -26,7 +28,7 @@ def main():
 
     data = normalize(data, norm='l2', axis=1)
 
-    k = 2
+    k = 3
     kmeans = KMeans(n_clusters=k, random_state=42)
     kmeans.fit(data)
 

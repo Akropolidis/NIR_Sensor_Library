@@ -12,7 +12,7 @@ NUM_CHANNELS = 64
 
 # Initialize ser to None to ensure it's defined
 ser = None
-
+print("yo")
 try:
     # Set up serial connection
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
@@ -28,7 +28,7 @@ y_vals = [0] * NUM_CHANNELS
 # Initialize the plot
 fig, ax = plt.subplots()
 lines, = ax.plot(x_vals, y_vals, marker="o", linestyle="--")
-ax.set_ylim(0, 500)
+ax.set_ylim(0, 1000)
 ax.set_xlim(0, NUM_CHANNELS - 1)
 ax.set_xlabel("Wavelength Channels")
 ax.set_ylabel("Amplitude")
@@ -50,6 +50,8 @@ def update(frame):
         #mass = float(input("Mass of sample: "))
         #food = input("Food being scanned: ")
         #input("Press Enter once food ready to be scanned...")
+        line = ser.readline().decode("utf-8").strip()
+        ser.readline()
         for i in range(NUM_CHANNELS):
             # Read each line as one data point
             line = ser.readline().decode("utf-8").strip()
