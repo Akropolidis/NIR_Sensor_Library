@@ -159,6 +159,9 @@ int main(void)
 			break;
 		}
 	}
+
+	stopMeasurements();
+	sleep();
 }
 
 /**
