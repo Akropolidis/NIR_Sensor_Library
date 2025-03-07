@@ -27,7 +27,7 @@ def calc_avg_no_outliers(spec):
             sum = sum + val
             count += 1
     num_outliers = len(spec) - count
-    print(f"outliers: {num_outliers}")
+    #print(f"outliers: {num_outliers}")
     return sum/count
 
 # input is spec data
@@ -85,21 +85,27 @@ def main():
     except serial.SerialException as e:
         print(f"Error opening serial port: {e}")
 
-
     AVG_WINDOW = 30
     exit = None
     print("starting...")
     plate_mass = float(input("Mass of plate: "))
     input("Press Enter to start scanning")
-    while(exit != 'e'):
+    while(True):
         #spec, valid = getSpectrum(ser)
         #if valid:
             #print(spec)
             #plotSpec(spec)
-        mass = float(input("Mass of sample: "))
-        mass = mass - plate_mass
-        food = input("Food being scanned: ")
+        num_con = int(input("Number of constituents:"))
+        con_arr = []
+        total_mass = plate_mass
+        for i in range(num_con):
+            sample_mass = float(input("Mass of sample: ")) - total_mass
+            food = input("Food being scanned: ")
+            con_arr.append([food, sample_mass])
+            total_mass += sample_mass
         exit = input("Press Enter once food ready to be scanned or 'e' to exit...")
+        if exit == 'e':
+            break
         spectrums = []
         i = 0
         while i < AVG_WINDOW:
@@ -110,11 +116,13 @@ def main():
                 i += 1
         spectrums = np.array(spectrums)
         avg_spec = avg_spec_no_outliers(spectrums)
-        print(avg_spec)
+        #print(avg_spec)
         plotSpec(avg_spec)
         avg_spec = avg_spec.tolist()
-        avg_spec.insert(0, mass)
-        avg_spec.insert(0, food)
+        for pair in con_arr:
+            avg_spec.insert(0, pair[1])
+            avg_spec.insert(0, pair[0])
+        avg_spec.insert(0, num_con)
         # one row of data has food description, mass, and spectral data
         writeRow(avg_spec, "food_data.csv")
 
