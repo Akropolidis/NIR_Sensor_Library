@@ -28,6 +28,7 @@
 #include <inttypes.h>
 #include <limits.h>
 #include "mux.h"
+#include "gpio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,7 +99,7 @@ int main(void)
 	MX_USART2_UART_Init();
 	MX_BlueNRG_MS_Init();
 	/* USER CODE BEGIN 2 */
-
+	GPIO_Init();
 	I2C1_Init();
 
 	/* Mux *
@@ -150,7 +151,17 @@ int main(void)
 			count = 0;
 		}
 		count++;
+
+		/* Blue pushbutton breaks out of the while loop to put the device to sleep,
+		 * have to reset the board to restart measurements */
+		if (UserBtn_Control())
+		{
+			break;
+		}
 	}
+
+	stopMeasurements();
+	sleep();
 }
 
 /**

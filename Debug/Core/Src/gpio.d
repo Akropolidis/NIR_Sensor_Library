@@ -1,8 +1,4 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
- ../Core/Inc/stm32f4xx_hal_conf.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
+Core/Src/gpio.o: ../Core/Src/gpio.c ../Core/Inc/gpio.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h \
  ../Drivers/CMSIS/Include/core_cm4.h \
@@ -11,6 +7,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+ ../Core/Inc/stm32f4xx_hal_conf.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h \
@@ -25,21 +25,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../BlueNRG_MS/Target/hci_tl_interface.h \
- ../Core/Inc/stm32f4xx_nucleo_bus.h ../Core/Inc/stm32f4xx_nucleo_conf.h \
- ../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo_errno.h \
- ../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo.h \
- ../Core/Inc/stm32f4xx_nucleo_conf.h \
- ../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo_errno.h \
- ../BlueNRG_MS/App/app_bluenrg_ms.h ../Core/Inc/AS7421.h \
- ../Core/Inc/uart.h ../Core/Inc/i2c.h ../Core/Inc/systick.h \
- ../Core/Inc/mux.h ../Core/Inc/gpio.h
-../Core/Inc/main.h:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
-../Core/Inc/stm32f4xx_hal_conf.h:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h:
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+../Core/Inc/gpio.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h:
 ../Drivers/CMSIS/Include/core_cm4.h:
@@ -48,6 +35,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
+../Core/Inc/stm32f4xx_hal_conf.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:
@@ -63,17 +54,3 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../BlueNRG_MS/Target/hci_tl_interface.h:
-../Core/Inc/stm32f4xx_nucleo_bus.h:
-../Core/Inc/stm32f4xx_nucleo_conf.h:
-../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo_errno.h:
-../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo.h:
-../Core/Inc/stm32f4xx_nucleo_conf.h:
-../Drivers/BSP/STM32F4xx_Nucleo/stm32f4xx_nucleo_errno.h:
-../BlueNRG_MS/App/app_bluenrg_ms.h:
-../Core/Inc/AS7421.h:
-../Core/Inc/uart.h:
-../Core/Inc/i2c.h:
-../Core/Inc/systick.h:
-../Core/Inc/mux.h:
-../Core/Inc/gpio.h:

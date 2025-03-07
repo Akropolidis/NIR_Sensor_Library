@@ -1,0 +1,2 @@
+../Core/Src/gpio.c:13:6:GPIO_Init	4	static
+../Core/Src/gpio.c:28:6:UserBtn_Control	4	static
