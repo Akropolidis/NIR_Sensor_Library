@@ -67,7 +67,7 @@ def plotSpec(spec):
     # Initialize the plot
     fig, ax = plt.subplots()
     lines, = ax.plot(x_vals, spec, marker="o", linestyle="--")
-    ax.set_ylim(0, 1000)
+    ax.set_ylim(0, 2000)
     ax.set_xlim(0, NUM_CHANNELS - 1)
     ax.set_xlabel("Wavelength Channels")
     ax.set_ylabel("Amplitude")
