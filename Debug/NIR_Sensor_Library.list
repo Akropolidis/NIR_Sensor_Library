@@ -7292,8 +7292,8 @@ int main(void)
 	 * Note: calling enableChannel closes all the mux outputs before opening the specified channel
 	 * Switching between channels puts previously ON channel in idle mode (LED still on but not measuring)
 	 * Sensor state of previously ON channel resets to sleep mode with power on reset (i.e. power off then power on)*/
-	enableChannel(CHANNEL_1);
- 80032e0:	2002      	movs	r0, #2
+	enableChannel(CHANNEL_0);
+ 80032e0:	2001      	movs	r0, #1
  80032e2:	f000 fa3d 	bl	8003760 <enableChannel>
 	/* Sensor */
 	// Containers to receive channel data

@@ -106,7 +106,7 @@ int main(void)
 	 * Note: calling enableChannel closes all the mux outputs before opening the specified channel
 	 * Switching between channels puts previously ON channel in idle mode (LED still on but not measuring)
 	 * Sensor state of previously ON channel resets to sleep mode with power on reset (i.e. power off then power on)*/
-	enableChannel(CHANNEL_1);
+	enableChannel(CHANNEL_0);
 
 	/* Sensor */
 	// Containers to receive channel data
@@ -115,6 +115,8 @@ int main(void)
 
 	uint32_t sum_data[CHANNELSIZE] = {0};
 	float avg_data[CHANNELSIZE] = {0};
+
+	while(!UserBtn_Control()){} //stay here until button is pressed
 
 	startup();
 	HAL_Delay(2000);
