@@ -29,6 +29,7 @@
 #include <limits.h>
 #include "mux.h"
 #include "gpio.h"
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,6 +72,17 @@ static void MX_USART2_UART_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+
+float calc_percentile(float arr[AVERAGE_COUNT], uint p){
+	float n = ((float)p/100.0) * (sizeof(arr)+1);
+	int x2 = (int)ceil(n);
+	int x1 = (int)floor(n);
+	float y2 = arr[x2];
+	float y1 = arr[x1];
+	float interp_val = (n - x1)/(x2 - x1) * (y2 - y1) + y1;
+	return interp_val;
+}
+
 int main(void)
 {
 
@@ -113,7 +125,7 @@ int main(void)
 	uint16_t channel_data[CHANNELSIZE];
 	uint16_t temp_data[CHANNELSIZE];
 
-	uint32_t sum_data[CHANNELSIZE] = {0};
+	float sum_data[CHANNELSIZE][AVERAGE_COUNT] = {0};
 	float avg_data[CHANNELSIZE] = {0};
 
 	while(!UserBtn_Control()){
@@ -137,13 +149,23 @@ int main(void)
 
 		// Accumulate the readings
 		for (int i = 0; i < CHANNELSIZE; i++){
-		   sum_data[i] += channel_data[i];
+		   sum_data[i][count] = channel_data[i];
 		}
 
 		if (count >= AVERAGE_COUNT){
 			for (int i = 0; i < CHANNELSIZE; i++){
-				avg_data[i] = (float)sum_data[i] / AVERAGE_COUNT;
-				sum_data[i] = 0; //Reset sum for next averaging window
+				float q1 = calc_percentile(sum_data[i], 25);
+				float q3 = calc_percentile(sum_data[i], 75);
+				float iqr = q3-q1;
+				float sum = 0;
+				int num_vals = 0;
+				for (int j = 0; j < AVERAGE_COUNT; j++){
+					if (sum_data[i][j] <= (q3 + 1.5*iqr) && sum_data[i][j] >= (q1 - 1.5*iqr)) {
+						sum += sum_data[i][j];
+						num_vals++;
+					}
+				}
+				avg_data[i] = sum / num_vals;
 			}
 
 			for (int i = 0; i < CHANNELSIZE; i++){
