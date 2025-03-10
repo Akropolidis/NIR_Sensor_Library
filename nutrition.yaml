@@ -121,3 +121,14 @@ pb:
   sugars: 0.067
   protein: 0.2
   sodium: 0.004
+
+rice_p:
+  calories: 3.33
+  fat: 0
+  saturated_fat: 0
+  trans_fat: 0
+  carbohydrate: 0.8
+  fibre: 0.022
+  sugars: 0
+  protein: 0.0667
+  sodium: 0
