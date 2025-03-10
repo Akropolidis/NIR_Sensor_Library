@@ -116,7 +116,9 @@ int main(void)
 	uint32_t sum_data[CHANNELSIZE] = {0};
 	float avg_data[CHANNELSIZE] = {0};
 
-	while(!UserBtn_Control()){} //stay here until button is pressed
+	while(!UserBtn_Control()){
+		MX_BlueNRG_MS_Process(avg_data);
+	} //stay here until button is pressed
 
 	startup();
 	HAL_Delay(2000);
