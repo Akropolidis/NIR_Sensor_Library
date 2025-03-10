@@ -75,7 +75,7 @@ static void MX_USART2_UART_Init(void);
   * @retval int
   */
 
-float compare(const void* a, const void* b){
+int compare(const void* a, const void* b){
 	float fa = *(float*)a;
 	float fb = *(float*)b;
 	if (fa < fb){
@@ -88,9 +88,9 @@ float compare(const void* a, const void* b){
 
 float calc_percentile(float _arr[AVERAGE_COUNT], int p){
 	float arr[AVERAGE_COUNT];
-	memcpy(arr, _arr, sizeof(_arr));
+	memcpy(arr, _arr, sizeof(_arr[0])*AVERAGE_COUNT);
 	qsort(arr, AVERAGE_COUNT, sizeof(float), compare);
-	float n = ((float)p/100.0) * (sizeof(arr)+1);
+	float n = ((float)p/100.0) * (sizeof(arr)/sizeof(arr[0])+1);
 	int x2 = (int)ceil(n);
 	int x1 = (int)floor(n);
 	float y2 = arr[x2];
@@ -182,12 +182,13 @@ int main(void)
 					}
 				}
 				avg_data[i] = sum / num_vals;
+				//uart_buf_len = sprintf(uart_buf, "%.3f\n\r", avg_data[i]);
+				//HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
 			}
 
 			for (int i = 0; i < CHANNELSIZE; i++){
 				uart_buf_len = sprintf(uart_buf, "%.3f\n\r", avg_data[i]);
 				HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
-
 			}
 			MX_BlueNRG_MS_Process(avg_data);
 			count = 0;
