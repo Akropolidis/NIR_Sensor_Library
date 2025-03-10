@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <stdlib.h>
 #include "stm32f4xx.h"
 #include "AS7421.h"
 #include <inttypes.h>
@@ -30,6 +31,7 @@
 #include "mux.h"
 #include "gpio.h"
 #include <math.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,7 +75,21 @@ static void MX_USART2_UART_Init(void);
   * @retval int
   */
 
-float calc_percentile(float arr[AVERAGE_COUNT], uint p){
+float compare(const void* a, const void* b){
+	float fa = *(float*)a;
+	float fb = *(float*)b;
+	if (fa < fb){
+		return -1;
+	}else if (fa > fb){
+		return 1;
+	}
+	return 0;
+}
+
+float calc_percentile(float _arr[AVERAGE_COUNT], int p){
+	float arr[AVERAGE_COUNT];
+	memcpy(arr, _arr, sizeof(_arr));
+	qsort(arr, AVERAGE_COUNT, sizeof(float), compare);
 	float n = ((float)p/100.0) * (sizeof(arr)+1);
 	int x2 = (int)ceil(n);
 	int x1 = (int)floor(n);
