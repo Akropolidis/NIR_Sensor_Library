@@ -168,20 +168,21 @@ int main(void)
 		   sum_data[i][count] = channel_data[i];
 		}
 
-		if (count >= AVERAGE_COUNT){
+		if (count >= AVERAGE_COUNT-1){
 			for (int i = 0; i < CHANNELSIZE; i++){
-				float q1 = calc_percentile(sum_data[i], 25);
-				float q3 = calc_percentile(sum_data[i], 75);
-				float iqr = q3-q1;
+				//float q1 = calc_percentile(sum_data[i], 25);
+				//float q3 = calc_percentile(sum_data[i], 75);
+				//float iqr = q3-q1;
 				float sum = 0;
-				int num_vals = 0;
+				//int num_vals = 0;
 				for (int j = 0; j < AVERAGE_COUNT; j++){
-					if (sum_data[i][j] <= (q3 + 1.5*iqr) && sum_data[i][j] >= (q1 - 1.5*iqr)) {
+					//if (sum_data[i][j] <= (q3 + 1.5*iqr) && sum_data[i][j] >= (q1 - 1.5*iqr)) {
 						sum += sum_data[i][j];
-						num_vals++;
-					}
+						//num_vals++;
+					//}
 				}
-				avg_data[i] = sum / num_vals;
+				//avg_data[i] = sum / num_vals;
+				avg_data[i] = sum / AVERAGE_COUNT;
 				//uart_buf_len = sprintf(uart_buf, "%.3f\n\r", avg_data[i]);
 				//HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
 			}
