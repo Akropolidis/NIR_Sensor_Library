@@ -28,7 +28,7 @@ def nutri_facts(yaml):
         for i, nutr in enumerate(NUTRIENTS): 
             nutr_arr[i] += yaml[pair[0]][nutr] * pair[1]
     for i, n in enumerate(NUTRIENTS):
-        print(f"{n}: {nutr_arr[i]} g")
+        print(f"{n}: {nutr_arr[i]:.2f} g")
 
 def main():
     with open("nutrition.yaml") as stream:
